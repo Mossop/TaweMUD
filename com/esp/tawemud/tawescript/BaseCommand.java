@@ -7,9 +7,13 @@ import com.esp.tawemud.TaweServer;
 import com.esp.tawemud.items.Mobile;
 import java.util.StringTokenizer;
 
-public interface BaseCommand
+public interface BaseCommand extends Comparable
 {
+	public int compareTo(Object o);
+	
 	public String getName();
+	
+	public int getPriority();
 	
 	public String getHelp(Mobile mobile);
 

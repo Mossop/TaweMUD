@@ -235,6 +235,31 @@ public class Emote implements BaseCommand
 		return name;
 	}
 
+	public int compareTo(Object o)
+	{
+		if (o instanceof BaseCommand)
+		{
+			BaseCommand target = (BaseCommand)o;
+			if (getPriority()==target.getPriority())
+			{
+				return getName().compareToIgnoreCase(target.getName());
+			}
+			else
+			{
+				return getPriority()-target.getPriority();
+			}
+		}
+		else
+		{
+			throw new ClassCastException("Object given is not a BaseCommand");
+		}
+	}
+	
+	public int getPriority()
+	{
+		return 30;
+	}
+	
 	public String getHelp(Mobile mobile)
 	{
 		StringBuffer result = new StringBuffer();

@@ -678,7 +678,7 @@ public abstract class CodeableObject implements About
 		{
 			next=null;
 		}
-		while ((next!=null)&&(next.getName().compareToIgnoreCase(newcommand.getName())<0))
+		while ((next!=null)&&(next.compareTo(newcommand)<0))
 		{
 			loop.next();
 			if (loop.hasNext())

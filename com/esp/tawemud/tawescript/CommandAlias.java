@@ -18,6 +18,31 @@ public class CommandAlias implements BaseCommand
 		return name;
 	}
 	
+	public int getPriority()
+	{
+		return 10;
+	}
+	
+	public int compareTo(Object o)
+	{
+		if (o instanceof BaseCommand)
+		{
+			BaseCommand target = (BaseCommand)o;
+			if (getPriority()==target.getPriority())
+			{
+				return getName().compareToIgnoreCase(target.getName());
+			}
+			else
+			{
+				return getPriority()-target.getPriority();
+			}
+		}
+		else
+		{
+			throw new ClassCastException("Object given is not a BaseCommand");
+		}
+	}
+	
 	public String getHelp(Mobile mobile)
 	{
 		if (help!=null)
