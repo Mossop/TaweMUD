@@ -137,4 +137,9 @@ public interface IOBase
 	 * Closes the connection.
 	 */
 	public void close();
+
+	/**
+	 * Attempt to keep the network connection.
+	 */
+	public void ping();
 }

@@ -49,10 +49,12 @@ public class Player extends Mobile implements MailHandler, Runnable
 	private long millislogon;
 	private long commandsrun;
 	private String email;
+	private long nextping;
 
 	public Player(TaweServer server)
 	{
 		super(server);
+		nextping=0;
 		timeon=0;
 		email="";
 		commandsrun=0;
@@ -776,6 +778,11 @@ public class Player extends Mobile implements MailHandler, Runnable
 		{
 			if (isConnected())
 			{
+				if (System.currentTimeMillis()>=nextping)
+				{
+					nextping=System.currentTimeMillis()+60000;
+					client.ping();
+				}
 				long idle=(System.currentTimeMillis()-lastcommand)/1000;
 				long max;
 				long min;

@@ -93,10 +93,6 @@ public class PlayerIO implements IOBase, Runnable
 	 * The outputstream of our socket.
 	 */
 	private OutputStream out;
-	/**
-	 * If we know the size of the players telnet window yet.
-	 */
-	private boolean gotsize;
 
 	/**
 	 * The telnet character Interpret As Command.
@@ -173,7 +169,6 @@ public class PlayerIO implements IOBase, Runnable
 		inputbuffer = Collections.synchronizedList(new LinkedList());
 		outputbuffer = Collections.synchronizedList(new LinkedList());
 		charbuffer = new StringBuffer();
-		gotsize=false;
 		(new Thread(this,"PlayerIO")).start();
 	}
 
@@ -210,28 +205,6 @@ public class PlayerIO implements IOBase, Runnable
 			height=newheight;
 			width=newwidth;
 		}
-		setContinue(true);
-	}
-
-	/**
-	 * Checks if we have the players telnet size. We cannot display any output until we
-	 * have the players size, or had a response to say that we wont be getting a size.
-	 *
-	 * @return  True if we know the size
-	 */
-	private synchronized boolean canContinue()
-	{
-		return gotsize;
-	}
-
-	/**
-	 * Sets whether we have a size or not.
-	 *
-	 * @param value True if we have the size
-	 */
-	private synchronized void setContinue(boolean value)
-	{
-		gotsize=value;
 	}
 
 	/**
@@ -465,16 +438,19 @@ public class PlayerIO implements IOBase, Runnable
 	 */
 	private void writeString(String data)
 	{
-		synchronized (out)
+		if (!isClosing())
 		{
-			try
+			synchronized (out)
 			{
-				out.write(data.getBytes());
-				out.flush();
-			}
-			catch (Exception e)
-			{
-				e.printStackTrace();
+				try
+				{
+					out.write(data.getBytes());
+					out.flush();
+				}
+				catch (Exception e)
+				{
+					e.printStackTrace();
+				}
 			}
 		}
 	}
@@ -486,6 +462,7 @@ public class PlayerIO implements IOBase, Runnable
 	 */
 	private synchronized void setPos(int pos)
 	{
+		int width=getWidth();
 		cursorpos=pos%width;
 		while (cursorpos<0)
 		{
@@ -548,7 +525,7 @@ public class PlayerIO implements IOBase, Runnable
 			Object thisset=outputbuffer.get(0);
 			if (thisset instanceof List)
 			{
-				writeString("\u001B["+width+"D\u001B[J");
+				writeString("\u001B[1000D\u001B[J");
 				send((List)thisset);
 			}
 			else
@@ -581,7 +558,7 @@ public class PlayerIO implements IOBase, Runnable
 		setBlocking(true);
 		int pagecount=0;
 		int pages=(int)Math.ceil((lines.size()*1.00)/(height-2));
-		while ((!done)&&(loop<lines.size()))
+		while ((!done)&&(!isClosing())&&(loop<lines.size()))
 		{
 			writeString(lines.get(loop).toString());
 			loop++;
@@ -640,6 +617,7 @@ public class PlayerIO implements IOBase, Runnable
 		String color;
 		int colorlength=0;
 		int rllength;
+		int width=getWidth();
 
 		while (newpos>=0)
 		{
@@ -742,16 +720,6 @@ public class PlayerIO implements IOBase, Runnable
 	 */
 	private void print(String text)
 	{
-		while ((!canContinue())&&(!isClosing()))
-		{
-			try
-			{
-				Thread.sleep(100);
-			}
-			catch (Exception e)
-			{
-			}
-		}
 		StringBuffer buffer = new StringBuffer();
 		StringTokenizer splitter = new StringTokenizer(text,"\n\r\t\f");
 		while (splitter.hasMoreTokens())
@@ -890,6 +858,15 @@ public class PlayerIO implements IOBase, Runnable
 	}
 
 	/**
+	 * Transmits some invisible information across the network to try to keep the
+	 * connection alive.
+	 */
+	public void ping()
+	{
+		writeDo(NAWS);
+	}
+	
+	/**
 	 * Strips a telnet command from the character input buffer.
 	 *
 	 * @param line  The character buffer
@@ -908,6 +885,7 @@ public class PlayerIO implements IOBase, Runnable
 				line.delete(pos,pos+1);
 				if (command==SB)
 				{
+					//System.out.println("RCVD SB "+((int)option));
 					int endpos=line.toString().indexOf(""+IAC+SE);
 					if (endpos>=pos)
 					{
@@ -945,10 +923,6 @@ public class PlayerIO implements IOBase, Runnable
 				else if (command==WONT)
 				{
 					//System.out.println("RCVD WONT "+((int)option));
-					if (option==NAWS)
-					{
-						setContinue(true);
-					}
 				}
 				else if (command==DO)
 				{
@@ -1066,7 +1040,7 @@ public class PlayerIO implements IOBase, Runnable
 			charbuffer.delete(charbuffer.length()-1,charbuffer.length());
 			if (getPos()==0)
 			{
-				echoString("\u001B[A\u001B["+(width-1)+"C\u001B[K");
+				echoString("\u001B[A\u001B["+(getWidth()-1)+"C\u001B[K");
 			}
 			else
 			{
