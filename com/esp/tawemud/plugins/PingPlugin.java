@@ -121,7 +121,14 @@ public class PingPlugin implements Runnable, PluginInterface
 							}
 							line=in.readLine();
 						}
-						thisone.setVariable("pingtime",String.valueOf((int)(total/count)));
+						if (count>0)
+						{
+							thisone.setVariable("pingtime",String.valueOf((int)(total/count)));
+						}
+						else
+						{
+							thisone.setVariable("pingtime","N/A");
+						}
 					}
 				}
 				try
