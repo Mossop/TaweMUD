@@ -47,10 +47,6 @@ public class Emote extends BaseCommand
 	 */
 	private StringBuffer others;
 	/**
-	 * The name of the emote.
-	 */
-	private String name;
-	/**
 	 * Whether the emote is considered violent or not.
 	 */
 	private boolean violent;
@@ -97,7 +93,7 @@ public class Emote extends BaseCommand
 	public Emote(String thisname)
 	{
 		this();
-		name=thisname;
+		setName(thisname);
 	}
 
 	/**
@@ -120,7 +116,7 @@ public class Emote extends BaseCommand
 	 */
 	public void parseElement(Element node)
 	{
-		name=node.getAttribute("name");
+		setName(node.getAttribute("name"));
 		if (node.getAttribute("all").length()>0)
 		{
 			allflag=Boolean.valueOf(node.getAttribute("all")).booleanValue();
