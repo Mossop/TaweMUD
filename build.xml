@@ -54,21 +54,4 @@
 		<replace file="${worlddir}/messages.xml" token="name=&quot;Virtual Insanity&quot;" value="name=&quot;VI Test&quot;"/>
 	</target>
 
-	<target name="update" depends="basic">
-		<replace dir="${worlddir}">
-			<include name="**/*.xml"/>
-			<replacefilter token="&lt;!DOCTYPE World SYSTEM &quot;dtd/world.dtd&quot;&gt;" value="&lt;!DOCTYPE World PUBLIC &quot;-//TaweMUD//DTD TaweMUD World//EN&quot; &quot;http://eeguinness.swan.ac.uk/~tawemud/dtd/World.dtd&quot;&gt;"/>
-			<replacefilter token="&lt;!DOCTYPE World SYSTEM &quot;../dtd/world.dtd&quot;&gt;" value="&lt;!DOCTYPE World PUBLIC &quot;-//TaweMUD//DTD TaweMUD World//EN&quot; &quot;http://eeguinness.swan.ac.uk/~tawemud/dtd/World.dtd&quot;&gt;"/>
-			<replacefilter token="&lt;!DOCTYPE World SYSTEM &quot;../../dtd/world.dtd&quot;&gt;" value="&lt;!DOCTYPE World PUBLIC &quot;-//TaweMUD//DTD TaweMUD World//EN&quot; &quot;http://eeguinness.swan.ac.uk/~tawemud/dtd/World.dtd&quot;&gt;"/>
-			<replacefilter token="&lt;!DOCTYPE World SYSTEM &quot;../../../dtd/world.dtd&quot;&gt;" value="&lt;!DOCTYPE World PUBLIC &quot;-//TaweMUD//DTD TaweMUD World//EN&quot; &quot;http://eeguinness.swan.ac.uk/~tawemud/dtd/World.dtd&quot;&gt;"/>
-			<replacefilter token="&lt;!DOCTYPE World SYSTEM &quot;../../../../dtd/world.dtd&quot;&gt;" value="&lt;!DOCTYPE World PUBLIC &quot;-//TaweMUD//DTD TaweMUD World//EN&quot; &quot;http://eeguinness.swan.ac.uk/~tawemud/dtd/World.dtd&quot;&gt;"/>
-			<replacefilter token="&lt;!DOCTYPE Zone SYSTEM &quot;../dtd/zone.dtd&quot;&gt;" value="&lt;!DOCTYPE Zone PUBLIC &quot;-//TaweMUD//DTD TaweMUD Zone//EN&quot; &quot;http://eeguinness.swan.ac.uk/~tawemud/dtd/Zone.dtd&quot;&gt;"/>
-			<replacefilter token="&lt;!DOCTYPE InfoBook SYSTEM &quot;../dtd/info.dtd&quot;&gt;" value="&lt;!DOCTYPE InfoBook PUBLIC &quot;-//TaweMUD//DTD TaweMUD InfoBook//EN&quot; &quot;http://eeguinness.swan.ac.uk/~tawemud/dtd/InfoBook.dtd&quot;&gt;"/>
-			<replacefilter token="&lt;!DOCTYPE Zones SYSTEM &quot;dtd/zones.dtd&quot;&gt;" value="&lt;!DOCTYPE Zones PUBLIC &quot;-//TaweMUD//DTD TaweMUD Zones//EN&quot; &quot;http://eeguinness.swan.ac.uk/~tawemud/dtd/Zones.dtd&quot;&gt;"/>
-			<replacefilter token="&lt;!DOCTYPE InfoList SYSTEM &quot;dtd/infolist.dtd&quot;&gt;" value="&lt;!DOCTYPE InfoList PUBLIC &quot;-//TaweMUD//DTD TaweMUD InfoList//EN&quot; &quot;http://eeguinness.swan.ac.uk/~tawemud/dtd/InfoList.dtd&quot;&gt;"/>
-			<replacefilter token="&lt;!DOCTYPE Levels SYSTEM &quot;dtd/levels.dtd&quot;&gt;" value="&lt;!DOCTYPE Levels PUBLIC &quot;-//TaweMUD//DTD TaweMUD Levels//EN&quot; &quot;http://eeguinness.swan.ac.uk/~tawemud/dtd/Levels.dtd&quot;&gt;"/>
-			<replacefilter token="&lt;!DOCTYPE Races SYSTEM &quot;dtd/races.dtd&quot;&gt;" value="&lt;!DOCTYPE Races PUBLIC &quot;-//TaweMUD//DTD TaweMUD Races//EN&quot; &quot;http://eeguinness.swan.ac.uk/~tawemud/dtd/Races.dtd&quot;&gt;"/>
-		</replace>
-	</target>
-
 </project>
