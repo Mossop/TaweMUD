@@ -277,18 +277,12 @@ public class Emote implements BaseCommand
 		vars.setVariable("$hetarget","<he/she>");
 		vars.setVariable("$herstarget","<his/hers>");
 		vars.setVariable("$s","<text>");
+		result.append("@+W"+getName()+"@*@/@/");
 		if ((getAllFlag())||(getWorldFlag()))
 		{
-			result.append("@+W"+getName()+"@*@/@/");
-			result.append("Displays \""+vars.parseString(getAll().toString())+"@*\" to everyone ");
-			if (getWorldFlag())
-			{
-				result.append("in the mud:@/");
-			}
-			else
-			{
-				result.append("in your location:@/");
-			}
+			result.append("@+WUsed on its own:@/@/");
+			result.append("@+YTo others in the room@* : "+vars.parseString(getAll().toString())+"@/\n");
+			result.append("@+YTo yourself@*           : "+vars.parseString(getMe().toString())+"@/\n");
 			if (getSingleFlag())
 			{
 				result.append("@/");
@@ -296,21 +290,10 @@ public class Emote implements BaseCommand
 		}
 		if (getSingleFlag())
 		{
-			result.append("@+W"+getName()+" <character>@*@/@/");
-			result.append("Displays \""+vars.parseString(getTarget().toString())+"@*\" to the chosen person.");
-			if (getFarFlag())
-			{
-				result.append(" (they may be in another room)@/");
-			}
-			else
-			{
-				result.append("@/");
-			}
-			result.append("And displays \""+vars.parseString(getOthers().toString())+"@*\" to others in your location:@/");
-			if (getViolentFlag())
-			{
-				result.append("(This action is violent)@/");
-			}
+			result.append("@+WWith a mobile specified:@/@/");
+			result.append("@+YTo yourself@*           : "+vars.parseString(getSender().toString())+"@/\n");
+			result.append("@+YTo the target@*         : "+vars.parseString(getTarget().toString())+"@/\n");
+			result.append("@+YTo others in the room@* : "+vars.parseString(getOthers().toString())+"@/\n");
 		}
 		return result.toString();
 	}
