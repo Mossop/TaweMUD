@@ -11,8 +11,11 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.util.StringTokenizer;
 import com.esp.tawemud.tawescript.BaseCommand;
+import com.esp.tawemud.tawescript.CommandAlias;
 import com.esp.tawemud.tawescript.Variables;
 import com.esp.tawemud.tawescript.Special;
+import java.util.Map;
+import java.util.HashMap;
 import java.util.Collection;
 import java.util.List;
 import java.util.LinkedList;
@@ -49,6 +52,7 @@ public class TaweServer implements ServerBase, Runnable
 	private Random random;
 	private long starttick;
 	private Mobile trace;
+	private Map playeralias;
 	private String mudlog;
 	public static final String PACKAGE = "com.esp.tawemud";
 	private static String BUILD = "";
@@ -76,6 +80,7 @@ public class TaweServer implements ServerBase, Runnable
 		running=false;
 		players = new LinkedList();
 		messagequeue = new LinkedList();
+		playeralias = new HashMap();
 		cyclecount=0;
 		starttick=0;
 		trace=null;
@@ -201,12 +206,20 @@ public class TaweServer implements ServerBase, Runnable
 		if (!players.contains(player))
 		{
 			players.add(player);
+			CommandAlias newcomm = new CommandAlias();
+			newcomm.setPriority(20);
+			newcomm.setName(player.getName().toLowerCase());
+			newcomm.setAlias("tell "+player.getName().toLowerCase());
+			playeralias.put(player,newcomm);
+			world.addCommand(newcomm);
 		}
 	}
 
 	public void unregisterPlayer(Player player)
 	{
 		players.remove(player);
+		world.removeCommand((BaseCommand)playeralias.get(player));
+		playeralias.remove(player);
 	}
 
 	public void registerBoard(Board mh)
@@ -654,23 +667,7 @@ public class TaweServer implements ServerBase, Runnable
 				}
 				if (!worked)
 				{
-					boolean good = false;
-					Iterator plloop = players.iterator();
-					while ((!good)&&(plloop.hasNext()))
-					{
-						if (((Player)plloop.next()).hasName(found))
-						{
-							good=true;
-						}
-					}
-					if (good)
-					{
-						parseCommand(caller,"tell "+command);
-					}
-					else
-					{
-						caller.displayText("Pardon?");
-					}
+					caller.displayText("Pardon?");
 				}
 			}
 			catch (Throwable e)

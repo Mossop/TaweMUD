@@ -321,10 +321,4 @@ public class IntermudPacket
 		}
 		return displayList(output);
 	}
-
-	public static void main(String[] args)
-	{
-		IntermudPacket pckt = new IntermudPacket("\"startup-req-3\",5,\"TestTalker\",0,\"*gjs\",0,0,0,0,4242,0,0,\"Not Applicable\",\"Not Applicable\",\"JeamLand 1.2.1\",\"JL\",\"driver development\",\"dave.townsend@bigfoot.com\",([\"who\":1,\"finger\":1,\"locate\":1,\"tell\":1,\"channel\":1,]),([\"is_jeamland\":397,]),");
-		System.out.println(pckt.getDestination());
-	}
 }

@@ -655,6 +655,19 @@ public abstract class CodeableObject implements About
 	}
 
 	/**
+	 * Removes an exisitng command from this object.
+	 *
+	 * Deletes an unneeded command from this object.
+	 *
+	 * @param command	The command to be removed.
+	 */
+	 
+	public void removeCommand(BaseCommand command)
+	{
+		commands.remove(command);
+	}
+	
+	/**
 	 * Adds a new command to this object.
 	 *
 	 * Inserts the given command into the ordered list of commands on this object.

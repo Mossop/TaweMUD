@@ -2,61 +2,33 @@ package com.esp.tawemud.tawescript;
 
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
+import org.w3c.dom.Node;
 import com.esp.tawemud.CodeableObject;
 import com.esp.tawemud.InfoPage;
 import com.esp.tawemud.TaweServer;
 import com.esp.tawemud.items.Mobile;
 import java.util.StringTokenizer;
 
-public class Command extends GroupAction implements BaseCommand
+public class Command extends BaseCommand
 {
-	private String name;
 	private String args;
 	private String version;
 	private InfoPage help;
+	private GroupAction script;
 	
 	public Command(CodeableObject owner)
 	{
-		super();
-		setOwner(owner);
+		super(10);
 		args="10";
-		name="";
 		version="0.00";
+		script = new GroupAction();
+		script.setName("Command");
+		script.setOwner(owner);
 	}
 
 	public int getArgCount()
 	{
 		return Integer.parseInt(args);
-	}
-
-	public int getPriority()
-	{
-		return 10;
-	}
-	
-	public int compareTo(Object o)
-	{
-		if (o instanceof BaseCommand)
-		{
-			BaseCommand target = (BaseCommand)o;
-			if (getPriority()==target.getPriority())
-			{
-				return getName().compareToIgnoreCase(target.getName());
-			}
-			else
-			{
-				return getPriority()-target.getPriority();
-			}
-		}
-		else
-		{
-			throw new ClassCastException("Object given is not a BaseCommand");
-		}
-	}
-	
-	public String getName()
-	{
-		return name;
 	}
 
 	public String getHelp(Mobile mobile)
@@ -81,26 +53,44 @@ public class Command extends GroupAction implements BaseCommand
 		}
 		else
 		{
-			return super.parseSubElement(node,text);
+			return script.parseSubElement(node,text);
 		}
 	}
 
 	public void parseElement(Element node)
 	{
-		super.parseElement(node);
-		name=node.getAttribute("name");
+		setName(node.getAttribute("name"));
 		args=node.getAttribute("args");
 		version=node.getAttribute("version");
+		Node child = node.getFirstChild();
+		String text;
+		Element thisone;
+		while (child!=null)
+		{
+			if (child.getNodeType()==Node.ELEMENT_NODE)
+			{
+				if ((child.getFirstChild()!=null)&&(child.getFirstChild().getNodeType()==Node.TEXT_NODE))
+				{
+					text=child.getFirstChild().getNodeValue();
+				}
+				else
+				{
+					text="";
+				}
+				parseSubElement((Element)child,text);
+			}
+			child=child.getNextSibling();
+		}
 	}
 
 	public Element getElement(Document builder)
 	{
-		Element node = super.getElement(builder);
+		Element node = script.getElement(builder);
 		if (help!=null)
 		{
 			node.insertBefore(help.getElement(builder),node.getFirstChild());
 		}
-		node.setAttribute("name",name);
+		node.setAttribute("name",getName());
 		node.setAttribute("args",args);
 		node.setAttribute("version",version);
 		return node;
@@ -137,6 +127,6 @@ public class Command extends GroupAction implements BaseCommand
 		{
 			//variables.setVariable("$"+(loop+2),"");
 		}
-		return run(server,variables);
+		return script.run(server,variables);
 	}
 }

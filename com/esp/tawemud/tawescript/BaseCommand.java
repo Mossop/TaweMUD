@@ -7,19 +7,62 @@ import com.esp.tawemud.TaweServer;
 import com.esp.tawemud.items.Mobile;
 import java.util.StringTokenizer;
 
-public interface BaseCommand extends Comparable
+public abstract class BaseCommand implements Comparable
 {
-	public int compareTo(Object o);
+	private int priority;
+	private String name;
 	
-	public String getName();
+	public BaseCommand(int priority)
+	{
+		this.priority=priority;
+		name="";
+	}
 	
-	public int getPriority();
+	public int compareTo(Object o)
+	{
+		if (o instanceof BaseCommand)
+		{
+			BaseCommand target = (BaseCommand)o;
+			if (getPriority()==target.getPriority())
+			{
+				return getName().compareToIgnoreCase(target.getName());
+			}
+			else
+			{
+				return getPriority()-target.getPriority();
+			}
+		}
+		else
+		{
+			throw new ClassCastException("Object given is not a BaseCommand");
+		}
+	}
 	
-	public String getHelp(Mobile mobile);
+	public void setName(String newname)
+	{
+		name=newname;
+	}
+	
+	public String getName()
+	{
+		return name;
+	}
+	
+	public int getPriority()
+	{
+		return priority;
+	}
+	
+	public void setPriority(int newpriority)
+	{
+		priority=newpriority;
+	}
+	
+	public abstract String getHelp(Mobile mobile);
 
-	public void parseElement(Element node);
+	public abstract void parseElement(Element node);
 
-	public Element getElement(Document builder);
+	public abstract Element getElement(Document builder);
 
-	public boolean callCommand(TaweServer server, Mobile caller, String found, String args);
+	public abstract boolean callCommand(TaweServer server, Mobile caller, String found, String args);
 }

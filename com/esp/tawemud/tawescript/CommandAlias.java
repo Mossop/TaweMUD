@@ -7,40 +7,14 @@ import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.Document;
 
-public class CommandAlias implements BaseCommand
+public class CommandAlias extends BaseCommand
 {
-	private String name;
 	private String realcommand;
 	private InfoPage help;
 	
-	public String getName()
+	public CommandAlias()
 	{
-		return name;
-	}
-	
-	public int getPriority()
-	{
-		return 10;
-	}
-	
-	public int compareTo(Object o)
-	{
-		if (o instanceof BaseCommand)
-		{
-			BaseCommand target = (BaseCommand)o;
-			if (getPriority()==target.getPriority())
-			{
-				return getName().compareToIgnoreCase(target.getName());
-			}
-			else
-			{
-				return getPriority()-target.getPriority();
-			}
-		}
-		else
-		{
-			throw new ClassCastException("Object given is not a BaseCommand");
-		}
+		super(10);
 	}
 	
 	public String getHelp(Mobile mobile)
@@ -57,7 +31,7 @@ public class CommandAlias implements BaseCommand
 
 	public void parseElement(Element node)
 	{
-		name=node.getAttribute("alias");
+		setName(node.getAttribute("alias"));
 		realcommand=node.getAttribute("command");
 		Node child = node.getFirstChild();
 		while (child!=null)
@@ -71,10 +45,15 @@ public class CommandAlias implements BaseCommand
 		}
 	}
 
+	public void setAlias(String newalias)
+	{
+		realcommand=newalias;
+	}
+	
 	public Element getElement(Document builder)
 	{
 		Element node = builder.createElement("CommandAlias");
-		node.setAttribute("alias",name);
+		node.setAttribute("alias",getName());
 		node.setAttribute("command",realcommand);
 		if (help!=null)
 		{

@@ -14,18 +14,17 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.LinkedList;
 
-public class NLCommand implements BaseCommand
+public class NLCommand extends BaseCommand
 {
 	private GroupAction code;
 	private CodeableObject owner;
 	private List specs;
-	private String name;
 	private String version;
 	private InfoPage help;
 	
 	public NLCommand(CodeableObject owner)
 	{
-		super();
+		super(10);
 		this.owner=owner;
 		code = new GroupAction();
 		code.setOwner(owner);
@@ -34,36 +33,6 @@ public class NLCommand implements BaseCommand
 		version="0.00";
 	}
 
-	public String getName()
-	{
-		return name;
-	}
-
-	public int compareTo(Object o)
-	{
-		if (o instanceof BaseCommand)
-		{
-			BaseCommand target = (BaseCommand)o;
-			if (getPriority()==target.getPriority())
-			{
-				return getName().compareToIgnoreCase(target.getName());
-			}
-			else
-			{
-				return getPriority()-target.getPriority();
-			}
-		}
-		else
-		{
-			throw new ClassCastException("Object given is not a BaseCommand");
-		}
-	}
-	
-	public int getPriority()
-	{
-		return 10;
-	}
-	
 	public String getHelp(Mobile mobile)
 	{
 		if (help!=null)
@@ -116,7 +85,7 @@ public class NLCommand implements BaseCommand
 	public void parseElement(Element node)
 	{
 		version=node.getAttribute("version");
-		name=node.getAttribute("name");
+		setName(node.getAttribute("name"));
 		Node child = node.getFirstChild();
 		String text;
 		Element thisone;
