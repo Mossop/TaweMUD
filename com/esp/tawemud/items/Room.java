@@ -330,7 +330,7 @@ public class Room extends Container
 			{
 				mobilecontents.remove(oldref);
 			}
-			if (newref!=null)
+			if ((newref!=null)&&(newref.asItem()!=null))
 			{
 				newref.asItem().setLocation(this);
 			}
