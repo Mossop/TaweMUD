@@ -647,14 +647,14 @@ public class PlayerIO implements IOBase, Runnable
 			rllength=buffer.length()-colorlength;
 			while (rllength>(width-1))
 			{
-				int scanpos=width+colorlength;
+				int scanpos=(width-1)+colorlength;
 				while ((scanpos>=0)&&(buffer.charAt(scanpos)!=' '))
 				{
 					scanpos--;
 				}
 				if (scanpos<0)
 				{
-					scanpos=width+colorlength;
+					scanpos=(width-1)+colorlength;
 				}
 				lines.add(new StringBuffer(buffer.substring(0,scanpos)));
 				buffer.delete(0,scanpos+1);
@@ -712,14 +712,14 @@ public class PlayerIO implements IOBase, Runnable
 		rllength=buffer.length()-colorlength;
 		while (rllength>(width-1))
 		{
-			int scanpos=width+colorlength;
+			int scanpos=(width-1)+colorlength;
 			while ((scanpos>=0)&&(buffer.charAt(scanpos)!=' '))
 			{
 				scanpos--;
 			}
 			if (scanpos==0)
 			{
-				scanpos=width+colorlength;
+				scanpos=(width-1)+colorlength;
 			}
 			lines.add(new StringBuffer(buffer.substring(0,scanpos)));
 			buffer.delete(0,scanpos+1);
