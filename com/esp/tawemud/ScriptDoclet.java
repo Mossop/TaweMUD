@@ -114,7 +114,7 @@ public class ScriptDoclet
 			out.println("<!ATTLIST Command version CDATA \"0.00\">");
 			out.println("<!ATTLIST Command args CDATA \"10\">");
 			out.println();
-			out.println("<!ELEMENT CommandAlias EMPTY>");
+			out.println("<!ELEMENT CommandAlias (InfoPage?)>");
 			out.println("<!ATTLIST CommandAlias command CDATA #REQUIRED>");
 			out.println("<!ATTLIST CommandAlias alias CDATA #REQUIRED>");
 			out.println();

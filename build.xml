@@ -15,6 +15,10 @@
 		<property name="scriptweb" value="/var/www/tawemud/zoneguide/actions"/>
 	</target>
 
+	<target name="fix" depends="basic,basefix">
+		<fixcrlf srcdir="${worlddir}" includes="**/*.xml,**/*.dtd"/>
+	</target>
+
 	<target name="build" depends="dependencycheck,basebuild">
 		<rmic base="${output}" classpath="${classpath}" classname="com.esp.tawemud.plugins.RmiPlugin"/>
 	</target>
