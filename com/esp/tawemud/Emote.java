@@ -255,7 +255,7 @@ public class Emote implements BaseCommand
 		if ((getAllFlag())||(getWorldFlag()))
 		{
 			result.append("@+W"+getName()+"@*@/@/");
-			result.append("Displays \""+vars.parseString(getAll().toString())+"\" to everyone ");
+			result.append("Displays \""+vars.parseString(getAll().toString())+"@*\" to everyone ");
 			if (getWorldFlag())
 			{
 				result.append("in the mud:@/");
@@ -272,7 +272,7 @@ public class Emote implements BaseCommand
 		if (getSingleFlag())
 		{
 			result.append("@+W"+getName()+" <character>@*@/@/");
-			result.append("Displays \""+vars.parseString(getTarget().toString())+"\" to the chosen person.");
+			result.append("Displays \""+vars.parseString(getTarget().toString())+"@*\" to the chosen person.");
 			if (getFarFlag())
 			{
 				result.append(" (they may be in another room)@/");
@@ -281,7 +281,7 @@ public class Emote implements BaseCommand
 			{
 				result.append("@/");
 			}
-			result.append("And displays \""+vars.parseString(getOthers().toString())+"\" to others in your location:@/");
+			result.append("And displays \""+vars.parseString(getOthers().toString())+"@*\" to others in your location:@/");
 			if (getViolentFlag())
 			{
 				result.append("(This action is violent)@/");
