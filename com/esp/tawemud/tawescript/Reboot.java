@@ -19,7 +19,7 @@ import java.util.Iterator;
 public class Reboot extends SingleAction
 {
 	/**
-	 * The type of reboot. Can be CODE, EMOTES, INFO or WORLD
+	 * The type of reboot. Can be CODE, INFO or WORLD
 	 *
 	 * @required
 	 */

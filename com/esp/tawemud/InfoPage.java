@@ -56,16 +56,6 @@ public class InfoPage
 	}
 
 	/**
-	 * Adds a new block to the page.
-	 *
-	 * @param block The new block
-	 */
-	public void addBlock(InfoBlock block)
-	{
-		blocks.add(block);
-	}
-
-	/**
 	 * Serializes this infopage as an xml element.
 	 *
 	 * @param	builder	The xml document to build from.
@@ -121,7 +111,7 @@ public class InfoPage
 				{
 					InfoBlock block = new InfoBlock();
 					block.parseElement(thisone);
-					addBlock(block);
+					blocks.add(block);
 				}
 			}
 		}
