@@ -21,7 +21,7 @@
 
 	<target name="package" depends="basic,build,basepackage">
 		<jar jarfile="${worlddir}/TaweBase.jar" basedir="${output}" manifest="${base}/manifest" includes="${RootPackage}/IOBase.class,${RootPackage}/ServerBase.class,${RootPackage}/TaweLoader.class,${RootPackage}/TaweMUD.class"/>
-		<copy file="${base}/${ant.project.name}.jar" todir="${worlddir}"/>
+		<move overwrite="true" file="${base}/${ant.project.name}.jar" todir="${worlddir}"/>
 	</target>
 
 	<target name="docs" depends="basedocs"/>
