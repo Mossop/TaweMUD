@@ -80,7 +80,7 @@ public class RebootHandler extends Thread
 					{
 						current = (Zone)zones.next();
 						DOMImplementation domimp = DocumentBuilderFactory.newInstance().newDocumentBuilder().newDocument().getImplementation();
-						DocumentType dt = domimp.createDocumentType("Zone",null,"../dtd/zone.dtd");
+						DocumentType dt = domimp.createDocumentType("Zone","-//TaweMUD//DTD TaweMUD Zone//EN","http://eeguinness.swan.ac.uk/~tawemud/dtd/Zone.dtd");
 						Document doc = domimp.createDocument(null,"Zone",dt);
 						current.storeInElement(doc,doc.getDocumentElement());
 						newserver.addZone(doc.getDocumentElement(),out);

@@ -323,7 +323,7 @@ public class World extends CodeableObject
 		try
 		{
 			DOMImplementation domimp = DocumentBuilderFactory.newInstance().newDocumentBuilder().newDocument().getImplementation();
-			DocumentType dt = domimp.createDocumentType("Zones",null,"dtd/zones.dtd");
+			DocumentType dt = domimp.createDocumentType("Zones","-//TaweMUD//DTD TaweMUD Zones//EN","http://eeguinness.swan.ac.uk/~tawemuddtd/Zones.dtd");
 			Document doc = domimp.createDocument(null,"Zones",dt);
 			Element node=doc.getDocumentElement();
 			Iterator loop = zones.values().iterator();

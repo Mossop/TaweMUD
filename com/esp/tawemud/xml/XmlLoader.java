@@ -38,6 +38,7 @@ public class XmlLoader
 			docbuilderf.setValidating(validating);
 			DocumentBuilder db = docbuilderf.newDocumentBuilder();
 			db.setErrorHandler(new SimpleErrorHandler(out));
+			db.setEntityResolver(new TaweEntityResolver());
 			return db.parse(input);
 		}
 		catch (SAXException e)

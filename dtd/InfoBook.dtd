@@ -1,0 +1,11 @@
+<!ELEMENT InfoBook (InfoPage*)>
+<!ATTLIST InfoBook name CDATA #REQUIRED>
+
+<!ELEMENT InfoPage (InfoBlock*)>
+<!ATTLIST InfoPage name CDATA #REQUIRED>
+<!ATTLIST InfoPage flags CDATA "">
+<!ATTLIST InfoPage vis CDATA "0">
+
+<!ELEMENT InfoBlock (#PCDATA)>
+<!ATTLIST InfoBlock flags CDATA "">
+<!ATTLIST InfoBlock vis CDATA "0">

@@ -1,0 +1,43 @@
+<!ENTITY % scriptingdtd PUBLIC "-//TaweMUD//DTD TaweMUD Script//EN" "http://eeguinness.swan.ac.uk/~tawemud/dtd/Script.dtd">
+
+%scriptingdtd;
+
+<!ELEMENT World (ConnectMessage|LoginMessage|IncludeWorld|StartFlags|Flags|Description|NLCommand|Command|CommandAlias|Emote|Special|Subroutine|Variable)*>
+<!ATTLIST World name CDATA "">
+
+<!ELEMENT IncludeWorld EMPTY>
+<!ATTLIST IncludeWorld file CDATA #REQUIRED>
+
+<!ELEMENT ConnectMessage (#PCDATA)>
+
+<!ELEMENT LoginMessage (#PCDATA)>
+
+<!ELEMENT Variable (#PCDATA)>
+<!ATTLIST Variable name CDATA #REQUIRED>
+
+<!ELEMENT Emote (All?,Me?,Sender?,Target?,Others?)>
+<!ATTLIST Emote name CDATA #REQUIRED>
+<!ATTLIST Emote all (true|false) "false">
+<!ATTLIST Emote single (true|false) "false">
+<!ATTLIST Emote far (true|false) "false">
+<!ATTLIST Emote world (true|false) "false">
+<!ATTLIST Emote violent (true|false) "false">
+
+<!ELEMENT All (#PCDATA)>
+
+<!ELEMENT Me (#PCDATA)>
+
+<!ELEMENT Sender (#PCDATA)>
+
+<!ELEMENT Target (#PCDATA)>
+
+<!ELEMENT Others (#PCDATA)>
+
+<!ELEMENT InfoPage (InfoBlock*)>
+<!ATTLIST InfoPage name CDATA #REQUIRED>
+<!ATTLIST InfoPage flags CDATA "">
+<!ATTLIST InfoPage vis CDATA "0">
+
+<!ELEMENT InfoBlock (#PCDATA)>
+<!ATTLIST InfoBlock flags CDATA "">
+<!ATTLIST InfoBlock vis CDATA "0">

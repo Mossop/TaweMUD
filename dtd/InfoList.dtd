@@ -1,0 +1,4 @@
+<!ELEMENT InfoList (InfoBookFile*)>
+
+<!ELEMENT InfoBookFile EMPTY>
+<!ATTLIST InfoBookFile file CDATA #REQUIRED>

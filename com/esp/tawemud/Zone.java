@@ -81,7 +81,7 @@ public class Zone extends CodeableObject
 		try
 		{
 			DOMImplementation domimp = DocumentBuilderFactory.newInstance().newDocumentBuilder().newDocument().getImplementation();
-			DocumentType dt = domimp.createDocumentType("Zone",null,"../dtd/zone.dtd");
+			DocumentType dt = domimp.createDocumentType("Zone","-//TaweMUD//DTD TaweMUD Zone//EN","http://eeguinness.swan.ac.uk/~tawemud/dtd/Zone.dtd");
 			Document doc = domimp.createDocument(null,"Zone",dt);
 			storeInElement(doc,doc.getDocumentElement());
 			FileWriter output = new FileWriter(new File((new URL(world.getServer().getWorldURL()+"zones/"+getIdentifier()+".xml")).getFile()));

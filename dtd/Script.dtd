@@ -1,0 +1,523 @@
+<!ENTITY % scriptactions "Add|AddName|Beep|CallPlugin|CallSub|CanEnter|CanSee|Check|Clone|CloseDoor|Comment|Compare|Concat|Contains|CopyTravMess|Create|CreateZone|DelExit|DelItem|DelName|DelZone|DeleteMessage|Divide|FindItem|FindLocalItem|FindMobile|FindPlayer|FireCommand|FollowExit|ForLoop|Get|GetCommandHelp|GetExit|GetLength|GetLevelInfo|GetLongDirection|GetMessage|GetMessageSender|GetPronouns|GetRoutes|GetStat|GetTime|GetVariable|Greater|Halt|IsCloseableContainer|IsContainer|IsDPower|IsDirection|IsDoor|IsDrink|IsExit|IsFood|IsInfoPage|IsItem|IsLoggedIn|IsMobile|IsNull|IsNumeric|IsObject|IsPlayer|IsPower|IsRoom|IsWeapon|IsWiz|IsZone|Iterate|IterateAllPlayers|IterateEmotes|IterateFlags|IterateItems|IterateMobiles|IterateNames|IteratePlayers|IterateWornItems|IterateWornPlaces|IterateZoneItems|IterateZoneMobiles|IterateZones|Kill|ListMessages|LoadPlugin|LoadZone|Move|Multiply|OpenDoor|PadLeft|PadRight|QuietMove|Quit|Random|Reboot|RemoveFlag|RemoveLeft|Reset|SaveZone|Schedule|ScheduleEvent|SendMessage|Set|SetExit|SetFlag|SetMultiLine|SetPronoun|SetTravMess|SetVariable|Show|ShowAll|ShowInfo|ShowSpaced|StartTrace|StartsWith|StopTrace|Substring|Trace|TypeInfo|WizShow|Worked">
+
+<!ELEMENT Spec (#PCDATA)>
+<!ATTLIST Spec type (mortal|wiz|dpower|power) "mortal">
+<!ATTLIST Spec level CDATA "0">
+<!ATTLIST Spec name CDATA #REQUIRED>
+
+<!ELEMENT Code (%scriptactions;)*>
+
+<!ELEMENT NLCommand (InfoPage?,Spec*,Code)>
+<!ATTLIST NLCommand name CDATA #REQUIRED>
+<!ATTLIST NLCommand version CDATA "0.00">
+
+<!ELEMENT Command (InfoPage?,(%scriptactions;)*)>
+<!ATTLIST Command name CDATA #REQUIRED>
+<!ATTLIST Command class CDATA "">
+<!ATTLIST Command version CDATA "0.00">
+<!ATTLIST Command args CDATA "10">
+
+<!ELEMENT CommandAlias (InfoPage?)>
+<!ATTLIST CommandAlias command CDATA #REQUIRED>
+<!ATTLIST CommandAlias alias CDATA #REQUIRED>
+
+<!ELEMENT Special (%scriptactions;)*>
+<!ATTLIST Special identifier CDATA "">
+<!ATTLIST Special version CDATA "0.00">
+<!ATTLIST Special nexttime CDATA "-1">
+<!ATTLIST Special type (unknown|autorun|enter|exit|reset|state|level) "unknown">
+
+<!ELEMENT OnPass (%scriptactions;)*>
+
+<!ELEMENT OnFail (%scriptactions;)*>
+<!ELEMENT Subroutine (%scriptactions;)*>
+<!ATTLIST Subroutine name CDATA #REQUIRED>
+<!ATTLIST Subroutine inputs CDATA "">
+<!ATTLIST Subroutine outputs CDATA "">
+<!ATTLIST Subroutine version CDATA "0.00">
+
+<!ELEMENT Add EMPTY>
+<!ATTLIST Add value1 CDATA "0">
+<!ATTLIST Add value2 CDATA "0">
+<!ATTLIST Add dest CDATA #REQUIRED>
+
+<!ELEMENT AddName EMPTY>
+<!ATTLIST AddName item CDATA #REQUIRED>
+<!ATTLIST AddName name CDATA #REQUIRED>
+
+<!ELEMENT Beep EMPTY>
+<!ATTLIST Beep player CDATA #REQUIRED>
+
+<!ELEMENT CallPlugin (OnPass?,OnFail?)>
+<!ATTLIST CallPlugin player CDATA #REQUIRED>
+<!ATTLIST CallPlugin plugin CDATA #REQUIRED>
+<!ATTLIST CallPlugin function CDATA "">
+<!ATTLIST CallPlugin options CDATA "">
+
+<!ELEMENT CallSub (OnPass?,OnFail?)>
+<!ATTLIST CallSub name CDATA #REQUIRED>
+<!ATTLIST CallSub inputs CDATA "">
+<!ATTLIST CallSub outputs CDATA "">
+
+<!ELEMENT CanEnter (OnPass?,OnFail?)>
+<!ATTLIST CanEnter mobile CDATA #REQUIRED>
+<!ATTLIST CanEnter room CDATA #REQUIRED>
+
+<!ELEMENT CanSee (OnPass?,OnFail?)>
+<!ATTLIST CanSee mobile CDATA #REQUIRED>
+<!ATTLIST CanSee target CDATA #REQUIRED>
+
+<!ELEMENT Check (OnPass?,OnFail?)>
+<!ATTLIST Check item CDATA "">
+<!ATTLIST Check flag CDATA #REQUIRED>
+<!ATTLIST Check type CDATA "normal">
+
+<!ELEMENT Clone (OnPass?,OnFail?)>
+<!ATTLIST Clone item CDATA #REQUIRED>
+<!ATTLIST Clone identifier CDATA #REQUIRED>
+
+<!ELEMENT CloseDoor EMPTY>
+<!ATTLIST CloseDoor door CDATA #REQUIRED>
+
+<!ELEMENT Comment (#PCDATA)>
+
+<!ELEMENT Compare (OnPass?,OnFail?)>
+<!ATTLIST Compare string1 CDATA #REQUIRED>
+<!ATTLIST Compare string2 CDATA #REQUIRED>
+
+<!ELEMENT Concat EMPTY>
+<!ATTLIST Concat string CDATA "">
+<!ATTLIST Concat dest CDATA #REQUIRED>
+
+<!ELEMENT Contains (OnPass?,OnFail?)>
+<!ATTLIST Contains string CDATA #REQUIRED>
+<!ATTLIST Contains sub CDATA #REQUIRED>
+
+<!ELEMENT CopyTravMess EMPTY>
+<!ATTLIST CopyTravMess item CDATA #REQUIRED>
+<!ATTLIST CopyTravMess mess CDATA #REQUIRED>
+<!ATTLIST CopyTravMess dest CDATA #REQUIRED>
+
+<!ELEMENT Create (OnPass?,OnFail?)>
+<!ATTLIST Create zone CDATA #REQUIRED>
+<!ATTLIST Create type CDATA #REQUIRED>
+<!ATTLIST Create identifier CDATA #REQUIRED>
+
+<!ELEMENT CreateZone EMPTY>
+<!ATTLIST CreateZone string CDATA #REQUIRED>
+
+<!ELEMENT DelExit EMPTY>
+<!ATTLIST DelExit item CDATA #REQUIRED>
+<!ATTLIST DelExit direction CDATA #REQUIRED>
+<!ATTLIST DelExit type CDATA "">
+
+<!ELEMENT DelItem EMPTY>
+<!ATTLIST DelItem item CDATA #REQUIRED>
+
+<!ELEMENT DelName EMPTY>
+<!ATTLIST DelName item CDATA #REQUIRED>
+<!ATTLIST DelName name CDATA #REQUIRED>
+
+<!ELEMENT DelZone EMPTY>
+<!ATTLIST DelZone zone CDATA #REQUIRED>
+
+<!ELEMENT DeleteMessage (OnPass?,OnFail?)>
+<!ATTLIST DeleteMessage item CDATA #REQUIRED>
+<!ATTLIST DeleteMessage message CDATA #REQUIRED>
+
+<!ELEMENT Divide EMPTY>
+<!ATTLIST Divide value1 CDATA #REQUIRED>
+<!ATTLIST Divide value2 CDATA #REQUIRED>
+<!ATTLIST Divide dest CDATA #REQUIRED>
+
+<!ELEMENT FindItem (OnPass?,OnFail?)>
+<!ATTLIST FindItem container CDATA #REQUIRED>
+<!ATTLIST FindItem name CDATA #REQUIRED>
+<!ATTLIST FindItem dest CDATA #REQUIRED>
+
+<!ELEMENT FindLocalItem (OnPass?,OnFail?)>
+<!ATTLIST FindLocalItem mobile CDATA #REQUIRED>
+<!ATTLIST FindLocalItem name CDATA #REQUIRED>
+<!ATTLIST FindLocalItem dest CDATA #REQUIRED>
+
+<!ELEMENT FindMobile (OnPass?,OnFail?)>
+<!ATTLIST FindMobile container CDATA #REQUIRED>
+<!ATTLIST FindMobile name CDATA #REQUIRED>
+<!ATTLIST FindMobile dest CDATA #REQUIRED>
+
+<!ELEMENT FindPlayer (OnPass?,OnFail?)>
+<!ATTLIST FindPlayer name CDATA #REQUIRED>
+<!ATTLIST FindPlayer dest CDATA #REQUIRED>
+
+<!ELEMENT FireCommand (#PCDATA)>
+<!ATTLIST FireCommand item CDATA #REQUIRED>
+
+<!ELEMENT FollowExit (OnPass?,OnFail?)>
+<!ATTLIST FollowExit item CDATA #REQUIRED>
+<!ATTLIST FollowExit direction CDATA #REQUIRED>
+
+<!ELEMENT ForLoop (%scriptactions;)*>
+<!ATTLIST ForLoop start CDATA "0">
+<!ATTLIST ForLoop end CDATA "0">
+<!ATTLIST ForLoop step CDATA "1">
+<!ATTLIST ForLoop dest CDATA #REQUIRED>
+
+<!ELEMENT Get (OnPass?,OnFail?)>
+<!ATTLIST Get item CDATA #REQUIRED>
+<!ATTLIST Get attribute CDATA #REQUIRED>
+<!ATTLIST Get dest CDATA #REQUIRED>
+
+<!ELEMENT GetCommandHelp (OnPass?,OnFail?)>
+<!ATTLIST GetCommandHelp command CDATA #REQUIRED>
+<!ATTLIST GetCommandHelp mobile CDATA #REQUIRED>
+<!ATTLIST GetCommandHelp dest CDATA #REQUIRED>
+
+<!ELEMENT GetExit EMPTY>
+<!ATTLIST GetExit item CDATA #REQUIRED>
+<!ATTLIST GetExit direction CDATA #REQUIRED>
+<!ATTLIST GetExit dest CDATA #REQUIRED>
+
+<!ELEMENT GetLength (#PCDATA)>
+<!ATTLIST GetLength dest CDATA #REQUIRED>
+
+<!ELEMENT GetLevelInfo EMPTY>
+<!ATTLIST GetLevelInfo level CDATA #REQUIRED>
+<!ATTLIST GetLevelInfo qpoints CDATA #REQUIRED>
+<!ATTLIST GetLevelInfo experience CDATA #REQUIRED>
+
+<!ELEMENT GetLongDirection EMPTY>
+<!ATTLIST GetLongDirection direction CDATA #REQUIRED>
+<!ATTLIST GetLongDirection dest CDATA #REQUIRED>
+
+<!ELEMENT GetMessage (OnPass?,OnFail?)>
+<!ATTLIST GetMessage item CDATA #REQUIRED>
+<!ATTLIST GetMessage message CDATA #REQUIRED>
+<!ATTLIST GetMessage dest CDATA #REQUIRED>
+
+<!ELEMENT GetMessageSender (OnPass?,OnFail?)>
+<!ATTLIST GetMessageSender item CDATA #REQUIRED>
+<!ATTLIST GetMessageSender message CDATA #REQUIRED>
+<!ATTLIST GetMessageSender dest CDATA #REQUIRED>
+
+<!ELEMENT GetPronouns EMPTY>
+<!ATTLIST GetPronouns mobile CDATA #REQUIRED>
+<!ATTLIST GetPronouns dest CDATA #REQUIRED>
+
+<!ELEMENT GetRoutes (OnPass?,OnFail?)>
+<!ATTLIST GetRoutes room CDATA #REQUIRED>
+<!ATTLIST GetRoutes flag CDATA "maze">
+<!ATTLIST GetRoutes dest CDATA #REQUIRED>
+
+<!ELEMENT GetStat EMPTY>
+<!ATTLIST GetStat stat CDATA #REQUIRED>
+<!ATTLIST GetStat dest CDATA #REQUIRED>
+
+<!ELEMENT GetTime EMPTY>
+<!ATTLIST GetTime year CDATA "">
+<!ATTLIST GetTime month CDATA "">
+<!ATTLIST GetTime day CDATA "">
+<!ATTLIST GetTime hour CDATA "">
+<!ATTLIST GetTime minute CDATA "">
+<!ATTLIST GetTime second CDATA "">
+
+<!ELEMENT GetVariable EMPTY>
+<!ATTLIST GetVariable item CDATA "">
+<!ATTLIST GetVariable name CDATA #REQUIRED>
+<!ATTLIST GetVariable dest CDATA #REQUIRED>
+
+<!ELEMENT Greater (OnPass?,OnFail?)>
+<!ATTLIST Greater value1 CDATA #REQUIRED>
+<!ATTLIST Greater value2 CDATA #REQUIRED>
+
+<!ELEMENT Halt EMPTY>
+
+<!ELEMENT IsCloseableContainer (OnPass?,OnFail?)>
+<!ATTLIST IsCloseableContainer item CDATA #REQUIRED>
+
+<!ELEMENT IsContainer (OnPass?,OnFail?)>
+<!ATTLIST IsContainer item CDATA #REQUIRED>
+
+<!ELEMENT IsDPower (OnPass?,OnFail?)>
+<!ATTLIST IsDPower item CDATA #REQUIRED>
+
+<!ELEMENT IsDirection (OnPass?,OnFail?)>
+<!ATTLIST IsDirection direction CDATA #REQUIRED>
+
+<!ELEMENT IsDoor (OnPass?,OnFail?)>
+<!ATTLIST IsDoor item CDATA #REQUIRED>
+
+<!ELEMENT IsDrink (OnPass?,OnFail?)>
+<!ATTLIST IsDrink item CDATA #REQUIRED>
+
+<!ELEMENT IsExit (OnPass?,OnFail?)>
+<!ATTLIST IsExit item CDATA #REQUIRED>
+<!ATTLIST IsExit direction CDATA #REQUIRED>
+
+<!ELEMENT IsFood (OnPass?,OnFail?)>
+<!ATTLIST IsFood item CDATA #REQUIRED>
+
+<!ELEMENT IsInfoPage (OnPass?,OnFail?)>
+<!ATTLIST IsInfoPage book CDATA #REQUIRED>
+<!ATTLIST IsInfoPage page CDATA #REQUIRED>
+
+<!ELEMENT IsItem (OnPass?,OnFail?)>
+<!ATTLIST IsItem item CDATA #REQUIRED>
+
+<!ELEMENT IsLoggedIn (OnPass?,OnFail?)>
+<!ATTLIST IsLoggedIn player CDATA #REQUIRED>
+
+<!ELEMENT IsMobile (OnPass?,OnFail?)>
+<!ATTLIST IsMobile item CDATA #REQUIRED>
+
+<!ELEMENT IsNull (OnPass?,OnFail?)>
+<!ATTLIST IsNull string CDATA #REQUIRED>
+
+<!ELEMENT IsNumeric (OnPass?,OnFail?)>
+<!ATTLIST IsNumeric string CDATA #REQUIRED>
+
+<!ELEMENT IsObject (OnPass?,OnFail?)>
+<!ATTLIST IsObject item CDATA #REQUIRED>
+
+<!ELEMENT IsPlayer (OnPass?,OnFail?)>
+<!ATTLIST IsPlayer item CDATA #REQUIRED>
+
+<!ELEMENT IsPower (OnPass?,OnFail?)>
+<!ATTLIST IsPower item CDATA #REQUIRED>
+
+<!ELEMENT IsRoom (OnPass?,OnFail?)>
+<!ATTLIST IsRoom item CDATA #REQUIRED>
+
+<!ELEMENT IsWeapon (OnPass?,OnFail?)>
+<!ATTLIST IsWeapon item CDATA #REQUIRED>
+
+<!ELEMENT IsWiz (OnPass?,OnFail?)>
+<!ATTLIST IsWiz item CDATA #REQUIRED>
+
+<!ELEMENT IsZone (OnPass?,OnFail?)>
+<!ATTLIST IsZone string CDATA #REQUIRED>
+
+<!ELEMENT Iterate (%scriptactions;)*>
+<!ATTLIST Iterate items CDATA #REQUIRED>
+<!ATTLIST Iterate dest CDATA #REQUIRED>
+
+<!ELEMENT IterateAllPlayers (%scriptactions;)*>
+<!ATTLIST IterateAllPlayers order CDATA #REQUIRED>
+<!ATTLIST IterateAllPlayers dest CDATA #REQUIRED>
+
+<!ELEMENT IterateEmotes (%scriptactions;)*>
+<!ATTLIST IterateEmotes dest CDATA #REQUIRED>
+
+<!ELEMENT IterateFlags (%scriptactions;)*>
+<!ATTLIST IterateFlags item CDATA #REQUIRED>
+<!ATTLIST IterateFlags type CDATA "normal">
+<!ATTLIST IterateFlags dest CDATA #REQUIRED>
+
+<!ELEMENT IterateItems (%scriptactions;)*>
+<!ATTLIST IterateItems container CDATA #REQUIRED>
+<!ATTLIST IterateItems dest CDATA #REQUIRED>
+
+<!ELEMENT IterateMobiles (%scriptactions;)*>
+<!ATTLIST IterateMobiles container CDATA #REQUIRED>
+<!ATTLIST IterateMobiles dest CDATA #REQUIRED>
+
+<!ELEMENT IterateNames (%scriptactions;)*>
+<!ATTLIST IterateNames item CDATA #REQUIRED>
+<!ATTLIST IterateNames dest CDATA #REQUIRED>
+
+<!ELEMENT IteratePlayers (%scriptactions;)*>
+<!ATTLIST IteratePlayers dest CDATA #REQUIRED>
+
+<!ELEMENT IterateWornItems (%scriptactions;)*>
+<!ATTLIST IterateWornItems mobile CDATA #REQUIRED>
+<!ATTLIST IterateWornItems place CDATA #REQUIRED>
+<!ATTLIST IterateWornItems dest CDATA #REQUIRED>
+
+<!ELEMENT IterateWornPlaces (%scriptactions;)*>
+<!ATTLIST IterateWornPlaces item CDATA #REQUIRED>
+<!ATTLIST IterateWornPlaces dest CDATA #REQUIRED>
+
+<!ELEMENT IterateZoneItems (%scriptactions;)*>
+<!ATTLIST IterateZoneItems zone CDATA #REQUIRED>
+<!ATTLIST IterateZoneItems dest CDATA #REQUIRED>
+
+<!ELEMENT IterateZoneMobiles (%scriptactions;)*>
+<!ATTLIST IterateZoneMobiles zone CDATA #REQUIRED>
+<!ATTLIST IterateZoneMobiles dest CDATA #REQUIRED>
+
+<!ELEMENT IterateZones (%scriptactions;)*>
+<!ATTLIST IterateZones dest CDATA #REQUIRED>
+
+<!ELEMENT Kill EMPTY>
+<!ATTLIST Kill item CDATA #REQUIRED>
+
+<!ELEMENT ListMessages (OnPass?,OnFail?)>
+<!ATTLIST ListMessages item CDATA #REQUIRED>
+<!ATTLIST ListMessages dest CDATA #REQUIRED>
+
+<!ELEMENT LoadPlugin (OnPass?,OnFail?)>
+<!ATTLIST LoadPlugin classname CDATA #REQUIRED>
+
+<!ELEMENT LoadZone (OnPass?,OnFail?)>
+<!ATTLIST LoadZone zone CDATA #REQUIRED>
+
+<!ELEMENT Move (OnPass?,OnFail?)>
+<!ATTLIST Move item CDATA #REQUIRED>
+<!ATTLIST Move dest CDATA #REQUIRED>
+
+<!ELEMENT Multiply EMPTY>
+<!ATTLIST Multiply value1 CDATA #REQUIRED>
+<!ATTLIST Multiply value2 CDATA #REQUIRED>
+<!ATTLIST Multiply dest CDATA #REQUIRED>
+
+<!ELEMENT OpenDoor EMPTY>
+<!ATTLIST OpenDoor door CDATA #REQUIRED>
+
+<!ELEMENT PadLeft (#PCDATA)>
+<!ATTLIST PadLeft length CDATA #REQUIRED>
+<!ATTLIST PadLeft pad CDATA " ">
+<!ATTLIST PadLeft dest CDATA "">
+
+<!ELEMENT PadRight (#PCDATA)>
+<!ATTLIST PadRight length CDATA #REQUIRED>
+<!ATTLIST PadRight pad CDATA " ">
+<!ATTLIST PadRight dest CDATA "">
+
+<!ELEMENT QuietMove (OnPass?,OnFail?)>
+<!ATTLIST QuietMove item CDATA #REQUIRED>
+<!ATTLIST QuietMove dest CDATA #REQUIRED>
+
+<!ELEMENT Quit EMPTY>
+<!ATTLIST Quit item CDATA #REQUIRED>
+
+<!ELEMENT Random EMPTY>
+<!ATTLIST Random items CDATA #REQUIRED>
+<!ATTLIST Random dest CDATA #REQUIRED>
+
+<!ELEMENT Reboot EMPTY>
+<!ATTLIST Reboot type CDATA #REQUIRED>
+
+<!ELEMENT RemoveFlag EMPTY>
+<!ATTLIST RemoveFlag item CDATA #REQUIRED>
+<!ATTLIST RemoveFlag flag CDATA #REQUIRED>
+<!ATTLIST RemoveFlag type CDATA "normal">
+
+<!ELEMENT RemoveLeft (#PCDATA)>
+<!ATTLIST RemoveLeft length CDATA #REQUIRED>
+<!ATTLIST RemoveLeft dest CDATA #REQUIRED>
+
+<!ELEMENT Reset (OnPass?,OnFail?)>
+<!ATTLIST Reset zone CDATA #REQUIRED>
+
+<!ELEMENT SaveZone (OnPass?,OnFail?)>
+<!ATTLIST SaveZone zone CDATA #REQUIRED>
+
+<!ELEMENT Schedule (OnPass?,OnFail?)>
+<!ATTLIST Schedule item CDATA #REQUIRED>
+<!ATTLIST Schedule special CDATA #REQUIRED>
+<!ATTLIST Schedule hours CDATA "0">
+<!ATTLIST Schedule minutes CDATA "0">
+<!ATTLIST Schedule seconds CDATA "0">
+<!ATTLIST Schedule millis CDATA "0">
+
+<!ELEMENT ScheduleEvent (OnPass?,OnFail?)>
+<!ATTLIST ScheduleEvent item CDATA #REQUIRED>
+<!ATTLIST ScheduleEvent special CDATA #REQUIRED>
+<!ATTLIST ScheduleEvent warnings CDATA "">
+<!ATTLIST ScheduleEvent hours CDATA "0">
+<!ATTLIST ScheduleEvent minutes CDATA "0">
+<!ATTLIST ScheduleEvent seconds CDATA "0">
+<!ATTLIST ScheduleEvent millis CDATA "0">
+<!ATTLIST ScheduleEvent start CDATA "-1">
+<!ATTLIST ScheduleEvent message CDATA "">
+<!ATTLIST ScheduleEvent visibility CDATA "0">
+<!ATTLIST ScheduleEvent wizlevel CDATA "0">
+
+<!ELEMENT SendMessage (OnPass?,OnFail?)>
+<!ATTLIST SendMessage player CDATA #REQUIRED>
+<!ATTLIST SendMessage sender CDATA #REQUIRED>
+<!ATTLIST SendMessage target CDATA "">
+
+<!ELEMENT Set (OnPass?,OnFail?)>
+<!ATTLIST Set item CDATA #REQUIRED>
+<!ATTLIST Set attribute CDATA #REQUIRED>
+<!ATTLIST Set value CDATA #REQUIRED>
+
+<!ELEMENT SetExit EMPTY>
+<!ATTLIST SetExit item CDATA #REQUIRED>
+<!ATTLIST SetExit direction CDATA #REQUIRED>
+<!ATTLIST SetExit dest CDATA #REQUIRED>
+<!ATTLIST SetExit type CDATA "">
+
+<!ELEMENT SetFlag EMPTY>
+<!ATTLIST SetFlag item CDATA #REQUIRED>
+<!ATTLIST SetFlag flag CDATA #REQUIRED>
+<!ATTLIST SetFlag type CDATA "normal">
+
+<!ELEMENT SetMultiLine (OnPass?,OnFail?)>
+<!ATTLIST SetMultiLine item CDATA #REQUIRED>
+<!ATTLIST SetMultiLine attribute CDATA #REQUIRED>
+<!ATTLIST SetMultiLine player CDATA #REQUIRED>
+
+<!ELEMENT SetPronoun EMPTY>
+<!ATTLIST SetPronoun mobile CDATA #REQUIRED>
+<!ATTLIST SetPronoun item CDATA #REQUIRED>
+
+<!ELEMENT SetTravMess EMPTY>
+<!ATTLIST SetTravMess item CDATA #REQUIRED>
+<!ATTLIST SetTravMess mess CDATA #REQUIRED>
+<!ATTLIST SetTravMess value CDATA #REQUIRED>
+
+<!ELEMENT SetVariable EMPTY>
+<!ATTLIST SetVariable item CDATA #REQUIRED>
+<!ATTLIST SetVariable name CDATA #REQUIRED>
+<!ATTLIST SetVariable value CDATA #REQUIRED>
+
+<!ELEMENT Show (#PCDATA)>
+<!ATTLIST Show item CDATA #REQUIRED>
+<!ATTLIST Show visibility CDATA "0">
+<!ATTLIST Show noshow CDATA "">
+
+<!ELEMENT ShowAll (#PCDATA)>
+<!ATTLIST ShowAll visibility CDATA "0">
+<!ATTLIST ShowAll noshow CDATA "">
+<!ATTLIST ShowAll musthave CDATA "">
+<!ATTLIST ShowAll canthave CDATA "">
+
+<!ELEMENT ShowInfo (OnPass?,OnFail?)>
+<!ATTLIST ShowInfo item CDATA #REQUIRED>
+<!ATTLIST ShowInfo book CDATA #REQUIRED>
+<!ATTLIST ShowInfo page CDATA #REQUIRED>
+
+<!ELEMENT ShowSpaced (#PCDATA)>
+<!ATTLIST ShowSpaced item CDATA #REQUIRED>
+<!ATTLIST ShowSpaced visibility CDATA "0">
+
+<!ELEMENT StartTrace EMPTY>
+<!ATTLIST StartTrace mobile CDATA #REQUIRED>
+
+<!ELEMENT StartsWith (OnPass?,OnFail?)>
+<!ATTLIST StartsWith string CDATA #REQUIRED>
+<!ATTLIST StartsWith sub CDATA #REQUIRED>
+
+<!ELEMENT StopTrace EMPTY>
+
+<!ELEMENT Substring (#PCDATA)>
+<!ATTLIST Substring start CDATA "0">
+<!ATTLIST Substring end CDATA "">
+<!ATTLIST Substring dest CDATA #REQUIRED>
+
+<!ELEMENT Trace (%scriptactions;)*>
+<!ATTLIST Trace mobile CDATA #REQUIRED>
+
+<!ELEMENT TypeInfo EMPTY>
+<!ATTLIST TypeInfo type CDATA #REQUIRED>
+<!ATTLIST TypeInfo dest CDATA #REQUIRED>
+
+<!ELEMENT WizShow (#PCDATA)>
+<!ATTLIST WizShow visibility CDATA "0">
+<!ATTLIST WizShow level CDATA "1">
+<!ATTLIST WizShow noshow CDATA "">
+<!ATTLIST WizShow log CDATA "false">
+
+<!ELEMENT Worked EMPTY>
+

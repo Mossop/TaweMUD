@@ -1,0 +1,10 @@
+<!ELEMENT Levels (Level*)>
+
+<!ELEMENT Level (GuildInfo*)>
+<!ATTLIST Level level CDATA #REQUIRED>
+<!ATTLIST Level qpoints CDATA "0">
+<!ATTLIST Level experience CDATA "0">
+
+<!ELEMENT GuildInfo (#PCDATA)>
+<!ATTLIST GuildInfo guild CDATA #REQUIRED>
+<!ATTLIST GuildInfo quests CDATA "">

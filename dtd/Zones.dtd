@@ -1,0 +1,4 @@
+<!ELEMENT Zones (ZoneFile*)>
+
+<!ELEMENT ZoneFile EMPTY>
+<!ATTLIST ZoneFile zone CDATA #REQUIRED>

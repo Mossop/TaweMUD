@@ -1,0 +1,11 @@
+<!ELEMENT Races (Race*)>
+
+<!ELEMENT Race EMPTY>
+<!ATTLIST Race energy CDATA "0">
+<!ATTLIST Race vitality CDATA "0">
+<!ATTLIST Race strength CDATA "0">
+<!ATTLIST Race dexterity CDATA "0">
+<!ATTLIST Race agility CDATA "0">
+<!ATTLIST Race maxhealth CDATA "0">
+<!ATTLIST Race maxmana CDATA "0">
+<!ATTLIST Race race CDATA #REQUIRED>
