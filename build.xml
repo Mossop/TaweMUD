@@ -1,5 +1,5 @@
 <!DOCTYPE project [
-	<!ENTITY includes SYSTEM "../includes.xml">
+	<!ENTITY includes SYSTEM "../includes/includes.xml">
 ]>
 
 <project name="TaweMUD" default="build">
