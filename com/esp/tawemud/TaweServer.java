@@ -756,7 +756,7 @@ public class TaweServer implements ServerBase, Runnable
 
 	public Iterator getPlayers()
 	{
-		return players.iterator();
+		return (new LinkedList(players)).iterator();
 	}
 
 	public void logCrash(Throwable e)
