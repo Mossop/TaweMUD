@@ -37,16 +37,6 @@ public class PingPlugin implements Runnable, PluginInterface
 	public void shutdown()
 	{
 		setHalted(true);
-		while (thread.isAlive())
-		{
-			try
-			{
-				Thread.sleep(100);
-			}
-			catch(Exception e)
-			{
-			}
-		}
 	}
 
 	public void storeInElement(Document builder, Element node)
