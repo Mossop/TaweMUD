@@ -449,7 +449,7 @@ public class PlayerIO implements IOBase, Runnable
 	 *
 	 * @param pos The new position
 	 */
-	public synchronized void setPos(int pos)
+	private synchronized void setPos(int pos)
 	{
 		cursorpos=pos%width;
 		while (cursorpos<0)
@@ -463,7 +463,7 @@ public class PlayerIO implements IOBase, Runnable
 	 *
 	 * @return  The cursor position
 	 */
-	public synchronized int getPos()
+	private synchronized int getPos()
 	{
 		return cursorpos;
 	}
@@ -507,10 +507,27 @@ public class PlayerIO implements IOBase, Runnable
 	 */
 	public void flush()
 	{
+		boolean needbuffer = outputbuffer.size()>0;
 		while (outputbuffer.size()>0)
 		{
-			send((List)outputbuffer.get(0));
+			Object thisset=outputbuffer.get(0);
+			if (thisset instanceof List)
+			{
+				writeString("\u001B["+width+"D\u001B[J");
+				send((List)thisset);
+			}
+			else
+			{
+				writeString(thisset.toString());
+			}
 			outputbuffer.remove(0);
+		}
+		if (needbuffer)
+		{
+			synchronized(charbuffer)
+			{
+				writeString(charbuffer.toString()+"\u001B[6n");
+			}
 		}
 	}
 
@@ -558,7 +575,7 @@ public class PlayerIO implements IOBase, Runnable
 	private boolean doPager(int page, int total)
 	{
 		writeNewLine();
-		writeString("\u001B[1;36m[Page "+page+"/"+total+"]\u001B[0m");
+		writeString("\u001B[1;36m[Page "+page+"/"+total+"]\u001B[0m"+charbuffer.toString());
 		String line=readLine();
 		writeString("\u001B[0A\u001B[2K\u001B[0A");
 		if ((line==null)||(line.toLowerCase().startsWith("q")))
@@ -724,9 +741,7 @@ public class PlayerIO implements IOBase, Runnable
 	{
 		synchronized (outputbuffer)
 		{
-			List raw = new LinkedList();
-			raw.add(text);
-			outputbuffer.add(raw);
+			outputbuffer.add(text);
 		}
 	}
 
@@ -738,11 +753,7 @@ public class PlayerIO implements IOBase, Runnable
 	 */
 	public void printPrompt(String text)
 	{
-		synchronized (charbuffer)
-		{
-			print(text);
-			printRaw("\u001B[s"+charbuffer.toString()+"\u001B[6n");
-		}
+		print(text);
 	}
 
 	/**

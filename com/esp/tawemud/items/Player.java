@@ -2,7 +2,6 @@ package com.esp.tawemud.items;
 
 import java.net.Socket;
 import java.io.PrintWriter;
-import java.util.Vector;
 import java.util.LinkedList;
 import java.util.Iterator;
 import java.util.Date;
@@ -29,7 +28,7 @@ public class Player extends Mobile implements MailHandler, Runnable
 	private String awaymessage;
 	private Item homeroom;
 	private int password;
-	private Vector mailbox;
+	private LinkedList mailbox;
 	private Calendar laston;
 	private Calendar logon;
 	private IOBase client;
@@ -65,7 +64,7 @@ public class Player extends Mobile implements MailHandler, Runnable
 		client=null;
 		title="%n";
 		setValue("homeroom","newbie.start");
-		mailbox = new Vector(10);
+		mailbox = new LinkedList();
 		commandbuffer = new StringBuffer();
 		multilinebuffer = new StringBuffer();
 		linkdeadbuffer = new StringBuffer();
@@ -265,7 +264,7 @@ public class Player extends Mobile implements MailHandler, Runnable
 				int mesgcount=0;
 				for (int loop=0; loop<mailbox.size(); loop++)
 				{
-					if (!((Mail)mailbox.elementAt(loop)).isRead())
+					if (!((Mail)mailbox.get(loop)).isRead())
 					{
 						mesgcount++;
 					}
@@ -413,7 +412,6 @@ public class Player extends Mobile implements MailHandler, Runnable
 			}
 			else
 			{
-				client.printPrompt("\u001B[u\u001B[100D\u001B[J");
 				client.println(text+"@*");
 				displayPrompt();
 			}
@@ -498,7 +496,7 @@ public class Player extends Mobile implements MailHandler, Runnable
 	public void addMail(Mail message)
 	{
 		displayText("@+RYou have new mail!@*");
-		mailbox.addElement(message);
+		mailbox.add(message);
 	}
 
 	public int getMailCount()
@@ -515,7 +513,7 @@ public class Player extends Mobile implements MailHandler, Runnable
 	{
 		if (message<mailbox.size())
 		{
-			return (Mail)mailbox.elementAt(message);
+			return (Mail)mailbox.get(message);
 		}
 		else
 		{
@@ -529,7 +527,7 @@ public class Player extends Mobile implements MailHandler, Runnable
 		for (int loop=0; loop<mailbox.size(); loop++)
 		{
 			StringBuffer line = new StringBuffer();
-			Mail message = (Mail)mailbox.elementAt(loop);
+			Mail message = (Mail)mailbox.get(loop);
 			if (message.isRead())
 			{
 				line.append("Y");
@@ -882,7 +880,6 @@ public class Player extends Mobile implements MailHandler, Runnable
 				if (hasMultiLine())
 				{
 					setFlag("multiline");
-					client.printPrompt("\u001B[u\u001B[100D\u001B[J");
 					client.printPrompt(multiline.getFirstPrompt());
 					client.flush();
 					while ((!multiline.isFinished())&&(!client.isClosing())&&(isConnected()))
