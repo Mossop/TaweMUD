@@ -455,7 +455,7 @@ public class Intermud implements Runnable, PluginInterface
 			{
 				String thisname=loop.next().toString();
 				int count=0;
-				while ((count<mudorder.size())&&(mudorder.get(count).toString().compareTo(thisname)<0))
+				while ((count<mudorder.size())&&(mudorder.get(count).toString().compareToIgnoreCase(thisname)<0))
 				{
 					count++;
 				}
