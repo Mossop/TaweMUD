@@ -34,6 +34,27 @@ public interface IOBase
 	public void setPlayer(String name);
 	
 	/**
+	 * Returns terminal width.
+	 *
+	 * @return  The width of the players terminal
+	 */
+	public int getWidth();
+
+	/**
+	 * Returns terminal height.
+	 *
+	 * @return  The height of the players terminal
+	 */
+	public int getHeight();
+
+	/**
+	 * Returns a string description of the terminal type.
+	 *
+	 * @return  The short description of the terminal type
+	 */
+	public String getType();
+
+	/**
 	 * Returns connecting socket.
 	 *
 	 * @return  The socket the player is connecting with

@@ -322,6 +322,11 @@ public class Mobile extends Container
 		pronouns.put(noun.toLowerCase(),data);
 	}
 
+	public int getTerminalWidth()
+	{
+		return 80;
+	}
+	
 	public String getPronoun(String noun)
 	{
 		return (String)pronouns.get(noun.toLowerCase());

@@ -141,6 +141,18 @@ public class Player extends Mobile implements MailHandler, Runnable
 		multilinebuffer.delete(0,multilinebuffer.length());
 	}
 
+	public int getTerminalWidth()
+	{
+		if (isConnected())
+		{
+			return client.getWidth();
+		}
+		else
+		{
+			return 80;
+		}
+	}
+	
 	public String getHost()
 	{
 		if (isConnected())
@@ -256,6 +268,7 @@ public class Player extends Mobile implements MailHandler, Runnable
 			{
 				displayText(getWorld().getLoginMessage()+"@*");
 				displayText("@+WThis mud is running @+G"+TaweServer.getVersion()+" build "+TaweServer.getBuild());
+				displayText("@+WTerminal type: @+Y"+client.getType()+" @+WWidth: @+Y"+client.getWidth()+" @+WHeight: @+Y"+client.getHeight());
 				getServer().sendWizMessage(getName()+" has logged in",getWorldIdentifier(),getVisibility(),1,true);
 				if (homeroom!=null)
 				{

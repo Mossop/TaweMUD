@@ -56,6 +56,10 @@ public class PlayerIO implements IOBase, Runnable
 	 */
 	private int height;
 	/**
+	 * The type of the players terminal.
+	 */
+	private String termtype;
+	/**
 	 * If the connection is closed.
 	 */
 	private boolean closed;
@@ -118,6 +122,10 @@ public class PlayerIO implements IOBase, Runnable
 	 * The telnet command for SB.
 	 */
 	private static final char SB = '\u00FA';
+	/**
+	 * The telnet command for SE.
+	 */
+	private static final char SE = '\u00F0';
 
 	/**
 	 * The telnet option ECHO.
@@ -131,6 +139,10 @@ public class PlayerIO implements IOBase, Runnable
 	 * The telnet option NAWS.
 	 */
 	private static final char NAWS = '\u001F';
+	/**
+	 * The telnet option TERMINAL_TYPE.
+	 */
+	private static final char TERMINAL_TYPE = '\u0018';
 
 	/**
 	 * Initialises the connection.
@@ -141,6 +153,7 @@ public class PlayerIO implements IOBase, Runnable
 	public PlayerIO(Socket ourclient, boolean isblocking, ServerBase server) throws IOException
 	{
 		this.server=server;
+		termtype="";
 		client=ourclient;
 		cursorpos=0;
 		client.setSoTimeout(100);
@@ -149,6 +162,7 @@ public class PlayerIO implements IOBase, Runnable
 		writeWill(ECHO);
 		writeWill(SUPPRESS_GA);
 		writeDo(NAWS);
+		writeDo(TERMINAL_TYPE);
 		echoing=true;
 		sendcolor=true;
 		width=80;
@@ -350,6 +364,27 @@ public class PlayerIO implements IOBase, Runnable
 		return value;
 	}
 
+	public int getWidth()
+	{
+		synchronized (outputbuffer)
+		{
+			return width;
+		}
+	}
+	
+	public int getHeight()
+	{
+		synchronized (outputbuffer)
+		{
+			return height;
+		}
+	}
+	
+	public String getType()
+	{
+		return termtype;
+	}
+	
 	/**
 	 * Returns our socket.
 	 *
@@ -873,7 +908,7 @@ public class PlayerIO implements IOBase, Runnable
 				line.delete(pos,pos+1);
 				if (command==SB)
 				{
-					int endpos=line.toString().indexOf("\u00FF\u00F0");
+					int endpos=line.toString().indexOf(""+IAC+SE);
 					if (endpos>=pos)
 					{
 						String code=line.substring(pos,endpos);
@@ -886,11 +921,26 @@ public class PlayerIO implements IOBase, Runnable
 							rows=rows+((int)code.charAt(2))*256;
 							setSize(cols,rows);
 						}
+						else if ((option==TERMINAL_TYPE)&&(code.length()>=1)&&(code.charAt(0)=='\u0000'))
+						{
+							termtype=code.substring(1);
+						}
 					}
 				}
 				else if (command==WILL)
 				{
 					//System.out.println("RCVD WILL "+((int)option));
+					if (option==TERMINAL_TYPE)
+					{
+						StringBuffer response = new StringBuffer();
+						response.append(IAC);
+						response.append(SB);
+						response.append(TERMINAL_TYPE);
+						response.append('\u0001');
+						response.append(IAC);
+						response.append(SE);
+						writeString(response.toString());
+					}
 				}
 				else if (command==WONT)
 				{
