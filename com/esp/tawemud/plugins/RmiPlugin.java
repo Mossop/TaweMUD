@@ -234,10 +234,4 @@ public class RmiPlugin extends UnicastRemoteObject implements PluginInterface, R
 			}
 		}
 	}
-
-	public String callFunction(String user, String name, String options)
-	{
-		Item mobile = server.getWorld().findItem(user);
-		return "";
-	}
 }
