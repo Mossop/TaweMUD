@@ -15,7 +15,7 @@
 		<property name="scriptweb" value="/var/www/tawemud/zoneguide/actions"/>
 	</target>
 
-	<target name="build" depends="basebuild">
+	<target name="build" depends="dependencycheck,basebuild">
 		<rmic base="${output}" classpath="${classpath}" classname="com.esp.tawemud.plugins.RmiPlugin"/>
 	</target>
 

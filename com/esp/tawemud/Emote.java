@@ -238,9 +238,6 @@ public class Emote implements BaseCommand
 	public String getHelp(Mobile mobile)
 	{
 		StringBuffer result = new StringBuffer();
-		result.append("Help for the ");
-		result.append(getName());
-		result.append(" action:@/@/\n");
 		Variables vars = new Variables();
 		vars.setVariable("$n",mobile.getName());
 		vars.setVariable("$himselfcaller","<himself/herself>");
@@ -255,42 +252,40 @@ public class Emote implements BaseCommand
 		vars.setVariable("$hetarget","<he/she>");
 		vars.setVariable("$herstarget","<his/hers>");
 		vars.setVariable("$s","<text>");
-		result.append("@+YFlags@*  : ");
-		if (getAllFlag())
+		if ((getAllFlag())||(getWorldFlag()))
 		{
-			result.append("all,");
+			result.append("@+W"+getName()+"@*@/@/");
+			result.append("Displays \""+vars.parseString(getAll().toString())+"\" to everyone ");
+			if (getWorldFlag())
+			{
+				result.append("in the mud:@/");
+			}
+			else
+			{
+				result.append("in your location:@/");
+			}
+			if (getSingleFlag())
+			{
+				result.append("@/");
+			}
 		}
 		if (getSingleFlag())
 		{
-			result.append("single,");
-		}
-		if (getFarFlag())
-		{
-			result.append("far,");
-		}
-		if (getWorldFlag())
-		{
-			result.append("world,");
-		}
-		if (getViolentFlag())
-		{
-			result.append("violent,");
-		}
-		if (result.charAt(result.length()-1)==',')
-		{
-			result.delete(result.length()-1,result.length());
-		}
-		result.append("@/\n");
-		if (getAllFlag()||getWorldFlag())
-		{
-			result.append("@+YAll@*    : "+vars.parseString(getAll().toString())+"@/\n");
-			result.append("@+YMe@*     : "+vars.parseString(getMe().toString())+"@/\n");
-		}
-		if (getSingleFlag())
-		{
-			result.append("@+YSender@* : "+vars.parseString(getSender().toString())+"@/\n");
-			result.append("@+YTarget@* : "+vars.parseString(getTarget().toString())+"@/\n");
-			result.append("@+YOthers@* : "+vars.parseString(getOthers().toString())+"@/\n");
+			result.append("@+W"+getName()+" <character>@*@/@/");
+			result.append("Displays \""+vars.parseString(getTarget().toString())+"\" to the chosen person.");
+			if (getFarFlag())
+			{
+				result.append(" (they may be in another room)@/");
+			}
+			else
+			{
+				result.append("@/");
+			}
+			result.append("And displays \""+vars.parseString(getOthers().toString())+"\" to others in your location:@/");
+			if (getViolentFlag())
+			{
+				result.append("(This action is violent)@/");
+			}
 		}
 		return result.toString();
 	}

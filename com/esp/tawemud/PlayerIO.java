@@ -705,7 +705,7 @@ public class PlayerIO implements IOBase, Runnable
 		while (splitter.hasMoreTokens())
 		{
 			buffer.append(splitter.nextToken());
-			if ((splitter.hasMoreTokens())&&(!buffer.toString().endsWith("@/"))&&(!buffer.toString().endsWith(" ")))
+			if ((splitter.hasMoreTokens())&&(buffer.length()>0)&&(!buffer.toString().endsWith("@/"))&&(!buffer.toString().endsWith(" ")))
 			{
 				buffer.append(" ");
 			}

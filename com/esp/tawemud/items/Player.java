@@ -413,7 +413,8 @@ public class Player extends Mobile implements MailHandler, Runnable
 			}
 			else
 			{
-				client.println("\u001B[u\u001B[100D\u001B[J"+text+"@*");
+				client.printPrompt("\u001B[u\u001B[100D\u001B[J");
+				client.println(text+"@*");
 				displayPrompt();
 			}
 		}
@@ -881,7 +882,8 @@ public class Player extends Mobile implements MailHandler, Runnable
 				if (hasMultiLine())
 				{
 					setFlag("multiline");
-					client.printPrompt("\u001B[u\u001B[100D\u001B[J"+multiline.getFirstPrompt());
+					client.printPrompt("\u001B[u\u001B[100D\u001B[J");
+					client.printPrompt(multiline.getFirstPrompt());
 					client.flush();
 					while ((!multiline.isFinished())&&(!client.isClosing())&&(isConnected()))
 					{
