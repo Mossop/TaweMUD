@@ -412,7 +412,7 @@ public class Intermud implements Runnable, PluginInterface
 		if (rlname!=null)
 		{
 			MudInfo mudinfo=(MudInfo)muds.get(rlname);
-			mobile.displayText("@+YMud@*         : "+rlname+"@/");
+			mobile.displayText("@+YMud@*         : "+rlname);
 			mobile.displayText("@+YAddress@*     : "+mudinfo.getAddress());
 			mobile.displayText("@+YPort@*        : "+mudinfo.getPort());
 			mobile.displayText("@+YOOB Port@*    : "+mudinfo.getTcpPort());
