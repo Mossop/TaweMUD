@@ -1,9 +1,15 @@
 package com.esp.tawemud;
 
 import org.w3c.dom.Element;
+import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
+import com.esp.tawemud.tawescript.BaseCommand;
+import com.esp.tawemud.tawescript.Variables;
+import com.esp.tawemud.items.Mobile;
 import java.io.PrintWriter;
+import java.util.StringTokenizer;
+import java.util.Iterator;
 
 /**
  * Holds the information about a specilized emote.
@@ -18,7 +24,7 @@ import java.io.PrintWriter;
  * @author  Dave Townsend
  * @version 1.0
  */
-public class Emote
+public class Emote implements BaseCommand
 {
 	/**
 	 * The message others in the room should see (general).
@@ -95,12 +101,24 @@ public class Emote
 	}
 
 	/**
+	 * Returns this emote serialized as an xml element.
+	 * Currently only here to allow this class to be a BaseCommand.
+	 *
+	 * @param	builder	The xml document to build from.
+	 * @returns	An xml element that contains all the information about this emote.
+	 */
+	public Element getElement(Document builder)
+	{
+		return null;
+	}
+	
+	/**
 	 * Sets up the emote from the xml element.
 	 *
 	 * @param node  The xml element
 	 * @param out A PrintWriter for logging purposes.
 	 */
-	public void parseElement(Element node, PrintWriter out)
+	public void parseElement(Element node)
 	{
 		name=node.getAttribute("name");
 		if (node.getAttribute("all").length()>0)
@@ -215,5 +233,220 @@ public class Emote
 	public String getName()
 	{
 		return name;
+	}
+
+	public String getHelp(Mobile mobile)
+	{
+		StringBuffer result = new StringBuffer();
+		result.append("Help for the ");
+		result.append(getName());
+		result.append(" action:@/@/\n");
+		Variables vars = new Variables();
+		vars.setVariable("$n",mobile.getName());
+		vars.setVariable("$himselfcaller","<himself/herself>");
+		vars.setVariable("$hecaller","<he/she>");
+		vars.setVariable("$hiscaller","<his/her>");
+		vars.setVariable("$himcaller","<him/her>");
+		vars.setVariable("$herscaller","<his/hers>");
+		vars.setVariable("$t","<target>");
+		vars.setVariable("$himtarget","<him/her>");
+		vars.setVariable("$histarget","<his/her>");
+		vars.setVariable("$himselftarget","<himself/herself>");
+		vars.setVariable("$hetarget","<he/she>");
+		vars.setVariable("$herstarget","<his/hers>");
+		vars.setVariable("$s","<text>");
+		result.append("@+YFlags@*  : ");
+		if (getAllFlag())
+		{
+			result.append("all,");
+		}
+		if (getSingleFlag())
+		{
+			result.append("single,");
+		}
+		if (getFarFlag())
+		{
+			result.append("far,");
+		}
+		if (getWorldFlag())
+		{
+			result.append("world,");
+		}
+		if (getViolentFlag())
+		{
+			result.append("violent,");
+		}
+		if (result.charAt(result.length()-1)==',')
+		{
+			result.delete(result.length()-1,result.length());
+		}
+		result.append("@/\n");
+		if (getAllFlag()||getWorldFlag())
+		{
+			result.append("@+YAll@*    : "+vars.parseString(getAll().toString())+"@/\n");
+			result.append("@+YMe@*     : "+vars.parseString(getMe().toString())+"@/\n");
+		}
+		if (getSingleFlag())
+		{
+			result.append("@+YSender@* : "+vars.parseString(getSender().toString())+"@/\n");
+			result.append("@+YTarget@* : "+vars.parseString(getTarget().toString())+"@/\n");
+			result.append("@+YOthers@* : "+vars.parseString(getOthers().toString())+"@/\n");
+		}
+		return result.toString();
+	}
+	
+	/**
+	 * Calls the emote.
+	 *
+	 * @param	server	The current serveer process.
+	 * @param	caller	The mobile running the emote.
+	 * @param	found	The command the emote was invoked with.
+	 * @param	args	The arguments to the emote.
+	 * @returns	Whether the emote was succesfull or not.
+	 */
+	public boolean callCommand(TaweServer server, Mobile caller, String command, String args)
+	{
+		boolean worked=true;
+		int vis = caller.getVisibility();
+		Variables variables = new Variables();
+		variables.setVariable("$n",caller.getName());
+		if (caller.getGender().equals("female"))
+		{
+			variables.setVariable("$himselfcaller","herself");
+			variables.setVariable("$hecaller","she");
+			variables.setVariable("$hiscaller","her");
+			variables.setVariable("$himcaller","her");
+			variables.setVariable("$herscaller","hers");
+		}
+		else
+		{
+			variables.setVariable("$himselfcaller","himself");
+			variables.setVariable("$hecaller","he");
+			variables.setVariable("$hiscaller","his");
+			variables.setVariable("$himcaller","him");
+			variables.setVariable("$herscaller","his");
+		}
+		StringTokenizer tokens = new StringTokenizer(args);
+		if ((getSingleFlag())&&(tokens.hasMoreTokens()))
+		{
+			String name = tokens.nextToken();
+			args=args.substring(name.length());
+			if (caller.getPronoun(name)!=null)
+			{
+				name=caller.getPronoun(name);
+			}
+			while (args.startsWith(" "))
+			{
+				args=args.substring(1);
+			}
+			variables.setVariable("$s",args);
+			Mobile target = caller.getLocation().asRoom().findMobileByName(name);
+			if ((target!=null)&&(!caller.canSee(target)))
+			{
+				target=null;
+			}
+			if ((target==null)&&(getFarFlag()))
+			{
+				boolean found=false;
+				Iterator loop = server.getPlayers();
+				while ((!found)&&(loop.hasNext()))
+				{
+					Mobile thisone = (Mobile)loop.next();
+					if (thisone.hasName(name))
+					{
+						if (caller.canSee(thisone))
+						{
+							target=thisone;
+							found=true;
+						}
+					}
+				}
+			}
+			if (target!=null)
+			{
+				if ((!getViolentFlag())||(!target.checkFlag("peaceful")))
+				{
+					vis=Math.max(vis,target.getVisibility());
+					variables.setVariable("$t",target.getName());
+					if (target.getGender().equals("female"))
+					{
+						variables.setVariable("$himtarget","her");
+						variables.setVariable("$histarget","her");
+						variables.setVariable("$himselftarget","herself");
+						variables.setVariable("$hetarget","she");
+						variables.setVariable("$herstarget","hers");
+					}
+					else
+					{
+						variables.setVariable("$himtarget","him");
+						variables.setVariable("$histarget","his");
+						variables.setVariable("$himselftarget","himself");
+						variables.setVariable("$hetarget","he");
+						variables.setVariable("$herstarget","his");
+					}
+					String noshow=caller.getWorldIdentifier()+","+target.getWorldIdentifier();
+					String others = variables.parseString(getOthers().toString());
+					if (others.length()>0)
+					{
+						caller.getLocation().displayText(noshow,vis,others);
+					}
+					String sender = variables.parseString(getSender().toString());
+					if (sender.length()>0)
+					{
+						caller.displayText(sender);
+					}
+					String targetmes = variables.parseString(getTarget().toString());
+					if (targetmes.length()>0)
+					{
+						target.displayText(targetmes);
+					}
+				}
+				else
+				{
+					caller.displayText("They are too peaceful for that.");
+				}
+			}
+			else
+			{
+				caller.displayText("Who is that meant to be to?");
+			}
+		}
+		else if (getAllFlag()||getWorldFlag())
+		{
+			variables.setVariable("$s",args);
+			String all = variables.parseString(getAll().toString());
+			if (all.length()>0)
+			{
+				if (getWorldFlag())
+				{
+					Iterator loop = server.getPlayers();
+					while (loop.hasNext())
+					{
+						Mobile thisone = (Mobile)loop.next();
+						if (!thisone.equals(caller))
+						{
+							thisone.displayText(vis,all);
+						}
+					}
+				}
+				else
+				{
+					caller.getLocation().displayText(caller.getWorldIdentifier(),vis,all);
+				}
+			}
+			String me = variables.parseString(getMe().toString());
+			if (me.length()>0)
+			{
+				caller.displayText(variables.parseString(me));
+			}
+		}
+		else
+		{
+			if (getSingleFlag())
+			{
+				caller.displayText("Who is that meant to be to?");
+			}
+		}
+		return worked;
 	}
 }

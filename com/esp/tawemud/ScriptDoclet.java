@@ -104,11 +104,11 @@ public class ScriptDoclet
 			out.println();
 			out.println("<!ELEMENT Code (%scriptactions;)*>");
 			out.println();
-			out.println("<!ELEMENT NLCommand (Spec*,Code)>");
+			out.println("<!ELEMENT NLCommand (InfoPage?,Spec*,Code)>");
 			out.println("<!ATTLIST NLCommand name CDATA #REQUIRED>");
 			out.println("<!ATTLIST NLCommand version CDATA \"0.00\">");
 			out.println();
-			out.println("<!ELEMENT Command (%scriptactions;)*>");
+			out.println("<!ELEMENT Command (InfoPage?,(%scriptactions;)*)>");
 			out.println("<!ATTLIST Command name CDATA #REQUIRED>");
 			out.println("<!ATTLIST Command class CDATA \"\">");
 			out.println("<!ATTLIST Command version CDATA \"0.00\">");

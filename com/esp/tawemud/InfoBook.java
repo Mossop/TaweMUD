@@ -73,7 +73,7 @@ public class InfoBook
 				if (thisone.getTagName().equals("InfoPage"))
 				{
 					InfoPage page = new InfoPage();
-					page.parseElement(thisone,out);
+					page.parseElement(thisone);
 					addPage(page);
 				}
 			}

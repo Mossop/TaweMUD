@@ -1,11 +1,14 @@
 package com.esp.tawemud;
 
 import java.util.StringTokenizer;
-import java.util.Vector;
+import java.util.List;
+import java.util.LinkedList;
+import java.util.Iterator;
 import com.esp.tawemud.items.Mobile;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.w3c.dom.Element;
+import org.w3c.dom.Document;
 import java.io.PrintWriter;
 
 /**
@@ -26,7 +29,7 @@ public class InfoBlock
 	/**
 	 * The flags on this block.
 	 */
-	private Vector flags;
+	private List flags;
 	/**
 	 * The text within this block.
 	 */
@@ -38,13 +41,8 @@ public class InfoBlock
 	public InfoBlock()
 	{
 		visibility=0;
-		flags = new Vector(10);
+		flags = new LinkedList();
 		content = new StringBuffer();
-	}
-
-	public Vector getFlags()
-	{
-		return flags;
 	}
 
 	public StringBuffer getContent()
@@ -53,12 +51,37 @@ public class InfoBlock
 	}
 
 	/**
+	 * Serializes this infoblock as an xml element.
+	 *
+	 * @param	builder	The xml document to build from.
+	 * @returns	This infoblock as an xml element.
+	 */
+	public Element getElement(Document builder)
+	{
+		Element node = builder.createElement("InfoBlock");
+		node.setAttribute("vis",String.valueOf(visibility));
+		StringBuffer list = new StringBuffer();
+		Iterator flagloop = flags.iterator();
+		while (flagloop.hasNext())
+		{
+			list.append(flagloop.next());
+			if (flagloop.hasNext())
+			{
+				list.append(",");
+			}
+		}
+		node.setAttribute("flags",list.toString());
+		node.appendChild(builder.createTextNode(content.toString()));
+		return node;
+	}
+	
+	/**
 	 * Loads the block from an xml element.
 	 *
 	 * @param node  The xml element
 	 * @param out A PrintWriter for logging.
 	 */
-	public void parseElement(Element node, PrintWriter out)
+	public void parseElement(Element node)
 	{
 		StringTokenizer tokens = new StringTokenizer(node.getAttribute("flags"),",");
 		while (tokens.hasMoreTokens())
@@ -94,7 +117,7 @@ public class InfoBlock
 			boolean good = true;
 			for (int loop=0; loop<flags.size(); loop++)
 			{
-				if (!target.checkFlag((String)flags.elementAt(loop)))
+				if (!target.checkFlag((String)flags.get(loop)))
 				{
 					good=false;
 				}

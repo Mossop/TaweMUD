@@ -134,7 +134,6 @@ public class RmiPlugin extends UnicastRemoteObject implements PluginInterface, R
 					thisone.setWorld(server.getWorld());
 				}
 				server.getWorld().loadLevels(out);
-				server.getWorld().setEmotes(oldworld.getEmotes());
 				server.getWorld().setInfoBooks(oldworld.getInfoBooks());
 				server.sendWizMessage("World Reboot was successfull","",0,2);
 			}
@@ -148,15 +147,6 @@ public class RmiPlugin extends UnicastRemoteObject implements PluginInterface, R
 			out.println("Exception rebooting world - "+e.getMessage()+"@/");
 			e.printStackTrace(out);
 		}
-		server.setMudLog(PlayerIO.convertText(buffer.toString()));
-	}
-
-	public void rebootEmotes()
-	{
-		server.sendWizMessage("Emote Reboot called by Remote User","",0,2);
-		StringWriter buffer = new StringWriter();
-		PrintWriter out = new PrintWriter(buffer);
-		server.getWorld().loadEmotes(out);
 		server.setMudLog(PlayerIO.convertText(buffer.toString()));
 	}
 

@@ -39,4 +39,24 @@
 		<concat overwrite="true" output="${worlddir}/dtd/zone.dtd" files="${worlddir}/dtd/base/zone.dtd,${worlddir}/dtd/script.dtd"/>
 	</target>
 	
+	<target name="downloadworld" depends="basic">
+		<ftp server="eeguinness.swan.ac.uk" userid="tawemud" password="tawe6715" remotedir="TaweMUD" action="get" binary="no" passive="yes" newer="yes">
+			<fileset dir="${worlddir}">
+				<exclude name="*.jar"/>
+			</fileset>
+		</ftp>
+		<replace file="${worlddir}/messages.xml" token="name=&quot;Virtual Insanity&quot;" value="name=&quot;VI Test&quot;"/>
+	</target>
+
+	<target name="update" depends="basic">
+		<replace dir="${worlddir}">
+			<include name="emotes/*.xml"/>
+			<include name="emotes.xml"/>
+			<replacefilter token="&lt;!DOCTYPE Emotes SYSTEM &quot;../dtd/emotes.dtd&quot;&gt;" value="&lt;!DOCTYPE World SYSTEM &quot;../dtd/world.dtd&quot;&gt;"/>
+			<replacefilter token="&lt;Emotes&gt;" value="&lt;World&gt;"/>
+			<replacefilter token="&lt;/Emotes&gt;" value="&lt;/World&gt;"/>
+			<replacefilter token="&lt;IncludeEmotes file=" value="&lt;IncludeWorld file="/>
+		</replace>
+	</target>
+
 </project>

@@ -34,10 +34,6 @@ public class Reboot extends SingleAction
 		{
 			new RebootHandler(server);
 		}
-		else if (rltype.equals("EMOTES"))
-		{
-			server.getWorld().loadEmotes(out);
-		}
 		else if (rltype.equals("INFO"))
 		{
 			server.getWorld().loadInfo(out);

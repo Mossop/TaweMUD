@@ -963,6 +963,13 @@ public abstract class CodeableObject implements About
 			addCommand(newcommand);
 			return true;
 		}
+		else if (child.getTagName().equals("Emote"))
+		{
+			BaseCommand newcommand = new Emote();
+			newcommand.parseElement(child);
+			addCommand(newcommand);
+			return true;
+		}
 		else if (child.getTagName().equals("Special"))
 		{
 			Special newspecial = new Special(this);

@@ -23,12 +23,15 @@ public class IterateEmotes extends GroupAction
 	public boolean run(TaweServer server, Variables variables)
 	{
 		boolean result = false;
-		Iterator loop = server.getWorld().getEmoteIterator();
+		Iterator loop = server.getWorld().getCommandsIterator();
 		while (loop.hasNext())
 		{
-			Emote thisone = (Emote)loop.next();
-			variables.setVariable(dest,thisone.getName());
-			result=super.run(server,variables)||result;
+			BaseCommand thisone = (BaseCommand)loop.next();
+			if (thisone instanceof Emote)
+			{
+				variables.setVariable(dest,thisone.getName());
+				result=super.run(server,variables)||result;
+			}
 		}
 		return result;
 	}

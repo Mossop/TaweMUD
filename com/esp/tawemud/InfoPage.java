@@ -1,11 +1,14 @@
 package com.esp.tawemud;
 
-import java.util.Vector;
+import java.util.List;
+import java.util.Iterator;
+import java.util.LinkedList;
 import java.util.StringTokenizer;
 import com.esp.tawemud.items.Mobile;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.w3c.dom.Element;
+import org.w3c.dom.Document;
 import java.io.PrintWriter;
 
 /**
@@ -22,7 +25,7 @@ public class InfoPage
 	/**
 	 * The blocks in this page.
 	 */
-	private Vector blocks;
+	private List blocks;
 	/**
 	 * The visibility of the page.
 	 */
@@ -30,7 +33,7 @@ public class InfoPage
 	/**
 	 * The flags on this page.
 	 */
-	private Vector flags;
+	private List flags;
 	/**
 	 * The name of this page.
 	 */
@@ -43,13 +46,8 @@ public class InfoPage
 	{
 		name="";
 		visibility=0;
-		blocks = new Vector(10);
-		flags = new Vector(10);
-	}
-
-	public Vector getFlags()
-	{
-		return flags;
+		blocks = new LinkedList();
+		flags = new LinkedList();
 	}
 
 	public String getName()
@@ -64,16 +62,44 @@ public class InfoPage
 	 */
 	public void addBlock(InfoBlock block)
 	{
-		blocks.addElement(block);
+		blocks.add(block);
 	}
 
+	/**
+	 * Serializes this infopage as an xml element.
+	 *
+	 * @param	builder	The xml document to build from.
+	 * @returns	This infopage as an xml element.
+	 */
+	public Element getElement(Document builder)
+	{
+		Element node = builder.createElement("InfoPage");
+		node.setAttribute("name",name);
+		node.setAttribute("vis",String.valueOf(visibility));
+		StringBuffer list = new StringBuffer();
+		Iterator flagloop = flags.iterator();
+		while (flagloop.hasNext())
+		{
+			list.append(flagloop.next());
+			if (flagloop.hasNext())
+			{
+				list.append(",");
+			}
+		}
+		node.setAttribute("flags",list.toString());
+		for (int loop=0; loop<blocks.size(); loop++)
+		{
+			node.appendChild(((InfoBlock)blocks.get(loop)).getElement(builder));
+		}
+		return node;
+	}
+	
 	/**
 	 * Loads the page from an xml element.
 	 *
 	 * @param node  The xml element
-	 * @param out A PrintWriter for logging.
 	 */
-	public void parseElement(Element node, PrintWriter out)
+	public void parseElement(Element node)
 	{
 		name=node.getAttribute("name").toLowerCase();
 		StringTokenizer tokens = new StringTokenizer(node.getAttribute("flags"),",");
@@ -94,7 +120,7 @@ public class InfoPage
 				if (thisone.getTagName().equals("InfoBlock"))
 				{
 					InfoBlock block = new InfoBlock();
-					block.parseElement(thisone,out);
+					block.parseElement(thisone);
 					addBlock(block);
 				}
 			}
@@ -117,7 +143,7 @@ public class InfoPage
 			boolean good = true;
 			for (int loop=0; loop<flags.size(); loop++)
 			{
-				if (!target.checkFlag((String)flags.elementAt(loop)))
+				if (!target.checkFlag((String)flags.get(loop)))
 				{
 					good=false;
 				}
@@ -127,7 +153,7 @@ public class InfoPage
 				StringBuffer buffer = new StringBuffer();
 				for (int loop=0; loop<blocks.size(); loop++)
 				{
-					StringBuffer thisone = ((InfoBlock)blocks.elementAt(loop)).formatBlock(target);
+					StringBuffer thisone = ((InfoBlock)blocks.get(loop)).formatBlock(target);
 					if (thisone!=null)
 					{
 						buffer.append(thisone);

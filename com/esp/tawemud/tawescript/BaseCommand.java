@@ -10,12 +10,12 @@ import java.util.StringTokenizer;
 public interface BaseCommand
 {
 	public String getName();
+	
+	public String getHelp(Mobile mobile);
 
 	public void parseElement(Element node);
 
 	public Element getElement(Document builder);
-
-	public CodeableObject getOwner();
 
 	public boolean callCommand(TaweServer server, Mobile caller, String found, String args);
 }

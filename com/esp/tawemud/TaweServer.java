@@ -278,7 +278,6 @@ public class TaweServer implements ServerBase, Runnable
 			world=newworld;
 			world.loadLevels(out);
 			world.loadRaces(out);
-			world.loadEmotes(out);
 			world.loadInfo(out);
 			return true;
 		}
@@ -653,7 +652,7 @@ public class TaweServer implements ServerBase, Runnable
 					thisone=(BaseCommand)commands.next();
 					worked=thisone.callCommand(this,caller,found,args);
 				}
-				if ((!worked)&&(!world.fireEmote(caller,found,args)))
+				if (!worked)
 				{
 					boolean good = false;
 					Iterator plloop = players.iterator();

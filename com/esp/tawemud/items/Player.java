@@ -814,13 +814,13 @@ public class Player extends Mobile implements MailHandler, Runnable
 					}
 					if (getVisibility()<aim)
 					{
-						displayText("You have turned invisible.");
-						zone.getWorld().getServer().sendWizMessage(getName()+" has gone invisible",getWorldIdentifier(),aim,1);
 						if (!checkFlag("away"))
 						{
 							setFlag("away");
 						}
 						setVisibility(aim);
+						displayText("You have turned invisible.");
+						zone.getWorld().getServer().sendWizMessage(getName()+" has gone invisible",getWorldIdentifier(),aim,1);
 					}
 				}
 			}

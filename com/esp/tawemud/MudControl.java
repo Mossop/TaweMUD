@@ -67,11 +67,6 @@ public class MudControl
 				mud.rebootInfo();
 				System.out.println("Info rebooted");
 			}
-			else if (command.equals("emotereboot"))
-			{
-				mud.rebootEmotes();
-				System.out.println("Emotes rebooted");
-			}
 			else if (command.equals("halt"))
 			{
 				mud.haltServer();

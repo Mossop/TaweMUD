@@ -34,7 +34,6 @@ import java.net.URL;
 public class World extends CodeableObject
 {
 	private Map zones;
-	private EmoteList emotes;
 	private StringBuffer loginmessage;
 	private StringBuffer connectmessage;
 	private TaweServer server;
@@ -154,16 +153,6 @@ public class World extends CodeableObject
 	public Hashtable getInfoBooks()
 	{
 		return infobooks;
-	}
-
-	public void setEmotes(EmoteList emotes)
-	{
-		this.emotes=emotes;
-	}
-
-	public EmoteList getEmotes()
-	{
-		return emotes;
 	}
 
 	public TaweServer getServer()
@@ -327,178 +316,6 @@ public class World extends CodeableObject
 		{
 			e.printStackTrace();
 		}
-	}
-
-	public boolean loadEmotes(PrintWriter out)
-	{
-		emotes = new EmoteList(server.getWorldURL());
-		return emotes.loadFrom("emotes.xml",out);
-	}
-
-	public boolean fireEmote(Mobile caller, String command, String args)
-	{
-		Emote emote = emotes.findEmote(command);
-		boolean worked=false;
-		if (emote!=null)
-		{
-			worked=true;
-			int vis = caller.getVisibility();
-			Variables variables = new Variables();
-			variables.setVariable("$n",caller.getName());
-			if (caller.getGender().equals("female"))
-			{
-				variables.setVariable("$himselfcaller","herself");
-				variables.setVariable("$hecaller","she");
-				variables.setVariable("$hiscaller","her");
-				variables.setVariable("$himcaller","her");
-				variables.setVariable("$herscaller","hers");
-			}
-			else
-			{
-				variables.setVariable("$himselfcaller","himself");
-				variables.setVariable("$hecaller","he");
-				variables.setVariable("$hiscaller","his");
-				variables.setVariable("$himcaller","him");
-				variables.setVariable("$herscaller","his");
-			}
-			StringTokenizer tokens = new StringTokenizer(args);
-			if ((emote.getSingleFlag())&&(tokens.hasMoreTokens()))
-			{
-				String name = tokens.nextToken();
-				args=args.substring(name.length());
-				if (caller.getPronoun(name)!=null)
-				{
-					name=caller.getPronoun(name);
-				}
-				while (args.startsWith(" "))
-				{
-					args=args.substring(1);
-				}
-				variables.setVariable("$s",args);
-				Mobile target = caller.getLocation().asRoom().findMobileByName(name);
-				if ((target!=null)&&(!caller.canSee(target)))
-				{
-					target=null;
-				}
-				if ((target==null)&&(emote.getFarFlag()))
-				{
-					boolean found=false;
-					Iterator loop = server.getPlayers();
-					while ((!found)&&(loop.hasNext()))
-					{
-						Mobile thisone = (Mobile)loop.next();
-						if (thisone.hasName(name))
-						{
-							if (caller.canSee(thisone))
-							{
-								target=thisone;
-								found=true;
-							}
-						}
-					}
-				}
-				if (target!=null)
-				{
-					if ((!emote.getViolentFlag())||(!target.checkFlag("peaceful")))
-					{
-						vis=Math.max(vis,target.getVisibility());
-						variables.setVariable("$t",target.getName());
-						if (target.getGender().equals("female"))
-						{
-							variables.setVariable("$himtarget","her");
-							variables.setVariable("$histarget","her");
-							variables.setVariable("$himselftarget","herself");
-							variables.setVariable("$hetarget","she");
-							variables.setVariable("$herstarget","hers");
-						}
-						else
-						{
-							variables.setVariable("$himtarget","him");
-							variables.setVariable("$histarget","his");
-							variables.setVariable("$himselftarget","himself");
-							variables.setVariable("$hetarget","he");
-							variables.setVariable("$herstarget","his");
-						}
-						if (emote.getWorldFlag())
-						{
-							Iterator loop = server.getPlayers();
-							while (loop.hasNext())
-							{
-								Mobile thisone = (Mobile)loop.next();
-								if (!((thisone.equals(caller))||(thisone.equals(target))))
-								{
-									thisone.displayText(vis,variables.parseString(emote.getOthers().toString()));
-								}
-							}
-						}
-						else
-						{
-							String noshow=caller.getWorldIdentifier()+","+target.getWorldIdentifier();
-							String others = variables.parseString(emote.getOthers().toString());
-							if (others.length()>0)
-							{
-								caller.getLocation().displayText(noshow,vis,others);
-							}
-						}
-						String sender = variables.parseString(emote.getSender().toString());
-						if (sender.length()>0)
-						{
-							caller.displayText(sender);
-						}
-						String targetmes = variables.parseString(emote.getTarget().toString());
-						if (targetmes.length()>0)
-						{
-							target.displayText(targetmes);
-						}
-					}
-					else
-					{
-						caller.displayText("They are too peaceful for that.");
-					}
-				}
-				else
-				{
-					caller.displayText("Who is that meant to be to?");
-				}
-			}
-			else if (emote.getAllFlag()||emote.getWorldFlag())
-			{
-				variables.setVariable("$s",args);
-				String all = variables.parseString(emote.getAll().toString());
-				if (all.length()>0)
-				{
-					if (emote.getWorldFlag())
-					{
-						Iterator loop = server.getPlayers();
-						while (loop.hasNext())
-						{
-							Mobile thisone = (Mobile)loop.next();
-							if (!thisone.equals(caller))
-							{
-								thisone.displayText(vis,all);
-							}
-						}
-					}
-					else
-					{
-						caller.getLocation().displayText(caller.getWorldIdentifier(),vis,all);
-					}
-				}
-				String me = variables.parseString(emote.getMe().toString());
-				if (me.length()>0)
-				{
-					caller.displayText(variables.parseString(me));
-				}
-			}
-			else
-			{
-				if (emote.getSingleFlag())
-				{
-					caller.displayText("Who is that meant to be to?");
-				}
-			}
-		}
-		return worked;
 	}
 
 	public void saveZones()
@@ -803,17 +620,12 @@ public class World extends CodeableObject
 
 	public Iterator getEmoteIterator()
 	{
-		return emotes.getIterator();
+		return null;//emotes.getIterator();
 	}
 
 	public Iterator getZoneIterator()
 	{
 		return zones.values().iterator();
-	}
-
-	public Emote findEmote(String name)
-	{
-		return emotes.findEmote(name);
 	}
 
 	public Item findItem(String name)

@@ -3,6 +3,7 @@ package com.esp.tawemud.tawescript;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
+import com.esp.tawemud.InfoPage;
 import com.esp.tawemud.CodeableObject;
 import com.esp.tawemud.TaweServer;
 import com.esp.tawemud.PlayerIO;
@@ -20,7 +21,8 @@ public class NLCommand implements BaseCommand
 	private List specs;
 	private String name;
 	private String version;
-
+	private InfoPage help;
+	
 	public NLCommand(CodeableObject owner)
 	{
 		super();
@@ -32,16 +34,23 @@ public class NLCommand implements BaseCommand
 		version="0.00";
 	}
 
-	public CodeableObject getOwner()
-	{
-		return owner;
-	}
-
 	public String getName()
 	{
 		return name;
 	}
 
+	public String getHelp(Mobile mobile)
+	{
+		if (help!=null)
+		{
+			return help.formatPage(mobile);
+		}
+		else
+		{
+			return null;
+		}
+	}
+	
 	public boolean parseSubElement(Element node, String text)
 	{
 		if (node.getTagName().equals("Code"))
@@ -65,6 +74,12 @@ public class NLCommand implements BaseCommand
 			newspec.setLevel(node.getAttribute("level"));
 			newspec.setSpecText(text);
 			specs.add(newspec);
+			return true;
+		}
+		else if (node.getTagName().equals("InfoPage"))
+		{
+			help = new InfoPage();
+			help.parseElement(node);
 			return true;
 		}
 		else
@@ -103,6 +118,10 @@ public class NLCommand implements BaseCommand
 		Element node = builder.createElement("NLCommand");
 		node.setAttribute("name",getName());
 		node.setAttribute("version",version);
+		if (help!=null)
+		{
+			node.appendChild(help.getElement(builder));
+		}
 		int loop = 0;
 		while (loop<specs.size())
 		{
@@ -124,7 +143,7 @@ public class NLCommand implements BaseCommand
 			if (((Spec)specs.get(loop)).matches(caller,args,vars))
 			{
 				//caller.displayText("Matched spec "+((Spec)specs.get(loop)).getName());
-				vars.setVariable("$owner",getOwner().toString());
+				vars.setVariable("$owner",owner.toString());
 				vars.setVariable("$spec",((Spec)specs.get(loop)).getName());
 				vars.setVariable("$0",caller);
 				vars.setVariable("$1",calledname);

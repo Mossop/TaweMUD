@@ -25,7 +25,5 @@ public interface RmiPluginInterface extends Remote
 	
 	public void rebootInfo() throws RemoteException;
 	
-	public void rebootEmotes() throws RemoteException;
-	
 	public void haltServer() throws RemoteException;
 }
