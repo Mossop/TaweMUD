@@ -645,7 +645,7 @@ public class PlayerIO implements IOBase, Runnable
 		{
 			buffer.append(text.substring(pos,newpos));
 			rllength=buffer.length()-colorlength;
-			while (rllength>width)
+			while (rllength>(width-1))
 			{
 				int scanpos=width+colorlength;
 				while ((scanpos>=0)&&(buffer.charAt(scanpos)!=' '))
@@ -710,7 +710,7 @@ public class PlayerIO implements IOBase, Runnable
 		}
 		buffer.append(text.substring(pos));
 		rllength=buffer.length()-colorlength;
-		while (rllength>width)
+		while (rllength>(width-1))
 		{
 			int scanpos=width+colorlength;
 			while ((scanpos>=0)&&(buffer.charAt(scanpos)!=' '))
