@@ -127,8 +127,12 @@ public class PingPlugin implements Runnable, PluginInterface
 						}
 						else
 						{
-							thisone.setVariable("pingtime","N/A");
+							thisone.setVariable("pingtime","");
 						}
+					}
+					else
+					{
+						thisone.setVariable("pingtime","");
 					}
 				}
 				try
