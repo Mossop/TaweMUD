@@ -11,6 +11,7 @@ import java.io.PrintWriter;
 import java.lang.reflect.Method;
 import java.lang.reflect.Constructor;
 import com.esp.tawemud.tawescript.Command;
+import com.esp.tawemud.tawescript.CommandAlias;
 import com.esp.tawemud.tawescript.BaseCommand;
 import com.esp.tawemud.tawescript.NLCommand;
 import com.esp.tawemud.tawescript.Special;
@@ -959,6 +960,13 @@ public abstract class CodeableObject implements About
 		else if (child.getTagName().equals("NLCommand"))
 		{
 			BaseCommand newcommand = new NLCommand(this);
+			newcommand.parseElement(child);
+			addCommand(newcommand);
+			return true;
+		}
+		else if (child.getTagName().equals("CommandAlias"))
+		{
+			BaseCommand newcommand = new CommandAlias();
 			newcommand.parseElement(child);
 			addCommand(newcommand);
 			return true;

@@ -114,6 +114,10 @@ public class ScriptDoclet
 			out.println("<!ATTLIST Command version CDATA \"0.00\">");
 			out.println("<!ATTLIST Command args CDATA \"10\">");
 			out.println();
+			out.println("<!ELEMENT CommandAlias EMPTY>");
+			out.println("<!ATTLIST CommandAlias command CDATA #REQUIRED>");
+			out.println("<!ATTLIST CommandAlias alias CDATA #REQUIRED>");
+			out.println();
 			out.println("<!ELEMENT Special (%scriptactions;)*>");
 			out.println("<!ATTLIST Special identifier CDATA \"\">");
 			out.println("<!ATTLIST Special version CDATA \"0.00\">");
@@ -427,7 +431,7 @@ public class ScriptDoclet
 				if (!classes[loop].isAbstract())
 				{
 					String name=classes[loop].name();
-					if (!((name.equals("Command"))||(name.equals("Special"))||(name.equals("Subroutine"))||(name.equals("NLCommand"))||(name.equals("GroupAction"))||(name.equals("Variables"))||(name.equals("Spec"))))
+					if (!((name.equals("Command"))||(name.equals("Special"))||(name.equals("Subroutine"))||(name.equals("NLCommand"))||(name.equals("CommandAlias"))||(name.equals("GroupAction"))||(name.equals("Variables"))||(name.equals("Spec"))))
 					{
 						int pos=0;
 						while ((pos<list.size())&&(((ClassDoc)list.get(pos)).name().compareTo(name)<0))
