@@ -1,0 +1,18 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+<html>
+<head>
+</head>
+<body bgcolor="white">
+Plugins to extend the capabilities of the mud.
+
+<h2>Package Specification</h2>
+
+<p>Plugins are designed to integrate with the mud albeit in a reasonably basic fashion. All
+plugins must implement the PluginInterface interface. Once this is done they can be loaded
+into the mud and if necessary start up their own thread. Also a script action is provided
+call functions on the plugin as necessary. Although it is not necessary that the plugins
+exist in this package, keeping them all together would be usefull.</p>
+
+@see com.esp.tawemud.plugins.PluginInterface
+</body>
+</html>
