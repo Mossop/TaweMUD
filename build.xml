@@ -6,14 +6,14 @@
 
 	<property name="AppName" value="tawemud"/>
 
-	<taskdef name="concatenate" classname="com.esp.antextras.ConcatenateFiles"/>
+	<taskdef name="concat" classname="com.esp.antextras.Concatenate"/>
+
+	&includes;
 
 	<target name="basic" depends="setup">
 		<property name="worlddir" value="${homedir}/TaweMUD"/>
 		<property name="scriptweb" value="/var/www/tawemud/zoneguide/actions"/>
 	</target>
-
-	&includes;
 
 	<target name="build" depends="basebuild">
 		<rmic base="${output}" classpath="${classpath}" classname="com.esp.tawemud.plugins.RmiPlugin"/>
@@ -35,8 +35,8 @@
 				<param name="-manual" value="${scriptweb}"/>
 			</doclet>
 		</javadoc>
-		<concatenate file="${worlddir}/dtd/world.dtd" beginfile="${worlddir}/dtd/base/world.dtd" endfile="${worlddir}/dtd/script.dtd"/>
-		<concatenate file="${worlddir}/dtd/zone.dtd" beginfile="${worlddir}/dtd/base/zone.dtd" endfile="${worlddir}/dtd/script.dtd"/>
+		<concat overwrite="true" output="${worlddir}/dtd/world.dtd" files="${worlddir}/dtd/base/world.dtd,${worlddir}/dtd/script.dtd"/>
+		<concat overwrite="true" output="${worlddir}/dtd/zone.dtd" files="${worlddir}/dtd/base/zone.dtd,${worlddir}/dtd/script.dtd"/>
 	</target>
 	
 </project>
