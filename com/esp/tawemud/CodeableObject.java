@@ -293,17 +293,13 @@ public abstract class CodeableObject implements About
 	 */
 	protected List getFlags(String type)
 	{
-		if (type.equals("normal"))
-		{
-			return flags;
-		}
-		else if (type.equals("start"))
+		if (type.equals("start"))
 		{
 			return startflags;
 		}
 		else
 		{
-			return null;
+			return flags;
 		}
 	}
 	
